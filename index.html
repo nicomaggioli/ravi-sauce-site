@@ -460,46 +460,62 @@
         /* ── SHOP ─────────────────────────────────────────────────── */
         .shop-wrap {
             min-height: calc(100vh - var(--nav-h));
-            background: #f6f6f4;
-            color: #111;
-            padding-bottom: 80px;
+            background: #0a0a0a;
+            color: #d0d0d0;
+            padding: 0 18px 80px;
+            /* dot grid matches hero */
+            background-image: radial-gradient(circle, rgba(255,255,255,.03) 1px, transparent 1px);
+            background-size: 28px 28px;
+            background-attachment: local;
         }
 
-        /* Header row */
+        /* Header */
         .shop-hd {
             display: flex; align-items: baseline;
             justify-content: space-between; gap: 16px;
-            padding: 36px 0 24px;
+            padding: 36px 0 6px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            margin-bottom: 24px;
+        }
+        .shop-hd-left { display: flex; flex-direction: column; gap: 3px; }
+        .shop-hd-label {
+            font-family: 'Courier New', monospace;
+            font-size: 8px; letter-spacing: 3px;
+            color: var(--green); text-transform: uppercase;
         }
         .shop-hd-title {
-            font-size: 11px; font-weight: 600;
-            letter-spacing: 3px; text-transform: uppercase;
-            color: #111;
+            font-size: 22px; font-weight: 700;
+            letter-spacing: -0.5px; color: #e8e8e8;
         }
-        .shop-hd-count { font-size: 11px; color: #aaa; letter-spacing: 1px; }
+        .shop-hd-count {
+            font-family: 'Courier New', monospace;
+            font-size: 9px; color: rgba(255,255,255,.25);
+            letter-spacing: 2px; align-self: flex-end;
+        }
 
         /* Category filter */
-        .shop-filter {
-            display: flex; gap: 6px; padding-bottom: 28px;
-            flex-wrap: wrap;
-        }
+        .shop-filter { display: flex; gap: 6px; padding-bottom: 28px; flex-wrap: wrap; }
         .shop-filter-btn {
-            height: 30px; padding: 0 14px;
-            border: 1px solid #ddd; border-radius: 100px;
+            height: 28px; padding: 0 14px;
+            border: 1px solid rgba(255,255,255,.1); border-radius: 100px;
             background: transparent;
-            font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
-            color: #888; cursor: pointer;
+            font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(255,255,255,.35); cursor: pointer;
             transition: border-color .15s, color .15s, background .15s;
-            font-family: var(--font);
+            font-family: 'Courier New', monospace;
         }
-        .shop-filter-btn:hover  { border-color: #111; color: #111; }
-        .shop-filter-btn.active { background: #111; border-color: #111; color: #fff; }
+        .shop-filter-btn:hover  { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.7); }
+        .shop-filter-btn.active {
+            background: rgba(45,213,18,.12);
+            border-color: var(--green);
+            color: var(--green);
+        }
 
         /* Product grid */
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
+            gap: 1px;
         }
         .shop-item { cursor: pointer; }
         .shop-item[hidden] { display: none; }
@@ -507,32 +523,51 @@
         .shop-img-wrap {
             position: relative;
             aspect-ratio: 4/5;
-            background: #e8e8e5;
+            background: #111;
             overflow: hidden;
-            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,.05);
+            transition: border-color .3s;
+        }
+        .shop-item:hover .shop-img-wrap {
+            border-color: rgba(45,213,18,.3);
+            box-shadow: 0 0 24px rgba(45,213,18,.07);
         }
         .shop-img-wrap img {
             width: 100%; height: 100%;
-            object-fit: cover; display: block;
+            object-fit: contain; display: block;
             transition: transform .55s ease;
+            padding: 12%;
         }
-        .shop-item:hover .shop-img-wrap img { transform: scale(1.05); }
+        .shop-item:hover .shop-img-wrap img { transform: scale(1.06); }
 
-        .shop-item-info { padding: 10px 2px 24px; }
-        .shop-item-name {
-            display: block; font-size: 9px; font-weight: 500;
-            letter-spacing: 2px; text-transform: uppercase;
-            color: #111; margin-bottom: 5px;
+        /* Specimen number */
+        .shop-item-spec {
+            font-family: 'Courier New', monospace;
+            font-size: 7px; letter-spacing: 2px;
+            color: rgba(45,213,18,.4);
+            padding: 10px 0 4px;
         }
-        .shop-item-price { font-size: 11px; color: #999; }
+        .shop-item-name {
+            display: block; font-size: 10px; font-weight: 500;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            color: rgba(255,255,255,.75); margin-bottom: 4px;
+        }
+        .shop-item-price {
+            font-family: 'Courier New', monospace;
+            font-size: 11px; color: var(--green);
+            letter-spacing: 1px;
+        }
+        .shop-item-info { padding-bottom: 28px; }
 
         /* Mobile */
         @media (max-width: 900px) {
-            .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
-            .shop-hd { padding: 24px 0 18px; }
+            .shop-wrap { padding: 0 8px 60px; }
+            .shop-grid { grid-template-columns: repeat(2, 1fr); }
+            .shop-hd { padding: 24px 0 6px; margin-bottom: 18px; }
         }
         @media (max-width: 600px) {
-            .shop-filter-btn { height: 28px; padding: 0 11px; font-size: 8px; }
+            .shop-wrap { padding: 0 6px 60px; }
+            .shop-filter-btn { height: 26px; padding: 0 10px; font-size: 7px; }
         }
 
         /* ── CONTACT ──────────────────────────────────────────────── */
@@ -1301,8 +1336,11 @@
 
             <!-- HEADER -->
             <div class="shop-hd">
-                <span class="shop-hd-title">Shop</span>
-                <span class="shop-hd-count" id="shop-count">16 items</span>
+                <div class="shop-hd-left">
+                    <span class="shop-hd-label">RSL // Specimen Catalogue</span>
+                    <span class="shop-hd-title">Laboratory Store</span>
+                </div>
+                <span class="shop-hd-count" id="shop-count">16 specimens</span>
             </div>
 
             <!-- FILTER -->
@@ -1318,82 +1356,82 @@
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-chill-white.png" alt="Chill Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Chill Ravi</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-001 / TEE</div><span class="shop-item-name">Chill Ravi</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-chill-orange.png" alt="Chill Ravi Orange" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Chill Ravi — Orange</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-002 / TEE</div><span class="shop-item-name">Chill Ravi — Orange</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-green.png" alt="Green Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Green Ravi</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-003 / TEE</div><span class="shop-item-name">Green Ravi</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-strong.png" alt="Strong Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Strong Ravi</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-004 / TEE</div><span class="shop-item-name">Strong Ravi</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-color.png" alt="Ravi in Color" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Ravi in Color</span><span class="shop-item-price">$90</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-005 / TEE</div><span class="shop-item-name">Ravi in Color</span><span class="shop-item-price">$90</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-snake.png" alt="Snake Tee" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Snake Tee</span><span class="shop-item-price">$90</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-006 / TEE</div><span class="shop-item-name">Snake Tee</span><span class="shop-item-price">$90</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-ski.png" alt="Ski Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Ski Ravi</span><span class="shop-item-price">$90</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-007 / TEE</div><span class="shop-item-name">Ski Ravi</span><span class="shop-item-price">$90</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-fishing.png" alt="Fishing Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Fishing Ravi</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-008 / TEE</div><span class="shop-item-name">Fishing Ravi</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-clowns.png" alt="Ravi Clowns" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Ravi Clowns</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-009 / TEE</div><span class="shop-item-name">Ravi Clowns</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="tee">
                     <div class="shop-img-wrap"><img src="store/tee-mom.png" alt="Mom" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Mom</span><span class="shop-item-price">$85</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-010 / TEE</div><span class="shop-item-name">Mom</span><span class="shop-item-price">$85</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="acc">
                     <div class="shop-img-wrap"><img src="store/acc-belt.png" alt="Belt" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Belt</span><span class="shop-item-price">$145</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-011 / ACC</div><span class="shop-item-name">Belt</span><span class="shop-item-price">$145</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="acc">
                     <div class="shop-img-wrap"><img src="store/acc-chain.png" alt="Chain" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Chain</span><span class="shop-item-price">$199</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-012 / ACC</div><span class="shop-item-name">Chain</span><span class="shop-item-price">$199</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="acc">
                     <div class="shop-img-wrap"><img src="store/acc-watch.png" alt="Timepiece" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Timepiece</span><span class="shop-item-price">$599</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-013 / ACC</div><span class="shop-item-name">Timepiece</span><span class="shop-item-price">$599</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="obj">
                     <div class="shop-img-wrap"><img src="store/obj-buddha.png" alt="Buddha Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Buddha Ravi</span><span class="shop-item-price">$350</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-014 / OBJ</div><span class="shop-item-name">Buddha Ravi</span><span class="shop-item-price">$350</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="obj">
                     <div class="shop-img-wrap"><img src="store/obj-wood.png" alt="Wood Ravi" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Wood Ravi</span><span class="shop-item-price">$280</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-015 / OBJ</div><span class="shop-item-name">Wood Ravi</span><span class="shop-item-price">$280</span></div>
                 </div>
 
                 <div class="shop-item" data-cat="obj">
                     <div class="shop-img-wrap"><img src="store/obj-horse.png" alt="Blue Horse" loading="lazy"></div>
-                    <div class="shop-item-info"><span class="shop-item-name">Blue Horse</span><span class="shop-item-price">$320</span></div>
+                    <div class="shop-item-info"><div class="shop-item-spec">SPX-016 / OBJ</div><span class="shop-item-name">Blue Horse</span><span class="shop-item-price">$320</span></div>
                 </div>
 
             </div><!-- /shop-grid -->
@@ -1782,7 +1820,7 @@ function filterShop(cat) {
         item.hidden = !show;
         if (show) count++;
     });
-    document.getElementById('shop-count').textContent = count + ' item' + (count !== 1 ? 's' : '');
+    document.getElementById('shop-count').textContent = count + ' specimen' + (count !== 1 ? 's' : '');
 }
 
 // ── Contact ───────────────────────────────────────────────────────
