@@ -1606,7 +1606,8 @@
             </div>
 
             <div class="hud-panel hud-main">
-                <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto">
+                <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto"
+                       onloadedmetadata="this.currentTime=6">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
