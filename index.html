@@ -28,10 +28,7 @@
             font-family: var(--font);
             background: #fff;
             color: var(--black);
-            opacity: 0;
-            transition: opacity .4s ease;
         }
-        body.ready { opacity: 1; }
 
         img { display: block; max-width: 100%; }
         button { font-family: var(--font); cursor: pointer; }
@@ -539,9 +536,227 @@
         .back-top:hover { background: var(--green); color: #000; transform: translateY(-4px); }
 
         @media (max-width: 768px) { .back-top { bottom: 18px; right: 18px; } }
+
+        /* ── LOADER ──────────────────────────────────────────────── */
+        .loader {
+            position: fixed; inset: 0;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+        .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .ldr-inner { width: min(480px, 88vw); }
+
+        .ldr-brand {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: rgba(255,255,255,.3);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .ldr-divider {
+            height: 1px;
+            background: rgba(255,255,255,.1);
+            margin-bottom: 32px;
+        }
+
+        .ldr-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 44px;
+        }
+        .ldr-line {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,.35);
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+        .ldr-line.show { opacity: 1; }
+        .ldr-prompt { color: #2DD512; }
+
+        .ldr-counter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+        .ldr-status-txt {
+            font-size: 9px;
+            letter-spacing: 2.5px;
+            color: rgba(255,255,255,.35);
+        }
+        .ldr-count-num {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: -3px;
+            line-height: 1;
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+        .ldr-pct { font-size: 18px; color: rgba(255,255,255,.35); }
+
+        .ldr-track {
+            height: 1px;
+            background: rgba(255,255,255,.08);
+            position: relative;
+            overflow: visible;
+        }
+        .ldr-fill {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 0%;
+            background: #fff;
+            transition: width .12s ease-out;
+        }
+        .ldr-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 18px;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,.18);
+            text-transform: uppercase;
+        }
+
+        /* ── HERO ─────────────────────────────────────────────────── */
+        .hero {
+            position: relative;
+            height: 100vh;
+            height: 100svh;
+            margin-top: calc(-1 * (var(--nav-h) + 4px));
+            margin-left: -4px;
+            margin-right: -4px;
+            overflow: hidden;
+            background: #000;
+        }
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .hero-video.playing { opacity: 1; }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,.3) 0%,
+                rgba(0,0,0,.1) 40%,
+                rgba(0,0,0,.55) 100%
+            );
+            z-index: 1;
+        }
+        .hero-content {
+            position: absolute;
+            bottom: 60px;
+            left: 40px;
+            z-index: 2;
+            color: #fff;
+        }
+        .hero-eyebrow {
+            font-size: 9px;
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+            color: rgba(255,255,255,.5);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+        .hero-title {
+            font-size: clamp(48px, 7.5vw, 96px);
+            font-weight: 300;
+            letter-spacing: -2px;
+            line-height: .95;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .hero-meta {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            z-index: 2;
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,.3);
+            text-transform: uppercase;
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-family: 'Courier New', monospace;
+            font-size: 8px;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,.35);
+            text-transform: uppercase;
+            white-space: nowrap;
+            animation: scrollBob 2.2s ease-in-out infinite;
+        }
+        @keyframes scrollBob {
+            0%,100% { transform: translateX(-50%) translateY(0); }
+            50%      { transform: translateX(-50%) translateY(6px); }
+        }
+        @media (max-width: 768px) {
+            .hero-content { left: 20px; bottom: 48px; }
+            .hero-meta    { right: 20px; bottom: 48px; }
+            .hero-title   { font-size: clamp(36px, 11vw, 64px); }
+        }
+
+        /* ── HEADER OVER HERO ─────────────────────────────────────── */
+        .header.hero-mode {
+            background: transparent !important;
+            border-bottom-color: transparent !important;
+            box-shadow: none !important;
+        }
+        .header.hero-mode .logo img    { filter: brightness(0) invert(1); }
+        .header.hero-mode .nav-tab     { color: rgba(255,255,255,.7); }
+        .header.hero-mode .nav-tab:hover  { background: rgba(255,255,255,.12); color: #fff; }
+        .header.hero-mode .nav-tab.active { background: rgba(255,255,255,.18); color: #fff; }
+        .header.hero-mode .h-line      { background: #fff; }
     </style>
 </head>
 <body>
+
+<!-- LOADER -->
+<div id="loader" class="loader">
+    <div class="ldr-inner">
+        <div class="ldr-brand">Ravi Sauce Labs &nbsp;—&nbsp; Creative Studio</div>
+        <div class="ldr-divider"></div>
+        <div class="ldr-lines">
+            <div class="ldr-line" id="ldr-l1"><span class="ldr-prompt">›</span><span>SYSTEM BOOT INITIATED</span></div>
+            <div class="ldr-line" id="ldr-l2"><span class="ldr-prompt">›</span><span>LOADING CREATIVE ASSETS</span></div>
+            <div class="ldr-line" id="ldr-l3"><span class="ldr-prompt">›</span><span>MOUNTING INTERFACE</span></div>
+        </div>
+        <div class="ldr-counter-row">
+            <span class="ldr-status-txt" id="ldr-status">INITIALIZING</span>
+            <div><span class="ldr-count-num" id="ldr-count">000</span><span class="ldr-pct">%</span></div>
+        </div>
+        <div class="ldr-track"><div class="ldr-fill" id="ldr-fill"></div></div>
+        <div class="ldr-bottom">
+            <span>RS — LABS</span>
+            <span id="ldr-date"></span>
+        </div>
+    </div>
+</div>
 
 <!-- HEADER -->
 <header class="header" id="header">
@@ -591,6 +806,21 @@
 
     <!-- HOME -->
     <div id="home-page" class="page active">
+
+        <!-- HERO VIDEO -->
+        <div class="hero" id="hero-section">
+            <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="auto">
+                <source src="videos/animation-reel.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="hero-eyebrow">RS — 001</p>
+                <h1 class="hero-title">RAVI<br>SAUCE</h1>
+            </div>
+            <div class="hero-meta">ANIMATION REEL — 2026</div>
+            <div class="hero-scroll">↓ &nbsp;SCROLL</div>
+        </div>
+
         <div class="masonry-grid" id="home-grid"></div>
     </div>
 
@@ -897,6 +1127,11 @@ function showPage(page) {
         t.classList.toggle('active', t.dataset.page === page));
     document.querySelectorAll('.page').forEach(p =>
         p.classList.remove('active'));
+    // Reset header mode when leaving/entering home
+    const h = document.getElementById('header');
+    if (page !== 'home') {
+        h.classList.remove('hero-mode');
+    }
     document.getElementById(page + '-page').classList.add('active');
     document.querySelectorAll('.mob-item').forEach(m =>
         m.classList.toggle('active', m.dataset.page === page));
@@ -905,6 +1140,7 @@ function showPage(page) {
     window.location.hash = page;
 
     if (page === 'saved') renderSaved();
+    if (page === 'home') setTimeout(updateHeaderMode, 50);
 }
 
 // ── Mobile menu ───────────────────────────────────────────────────
@@ -1040,17 +1276,89 @@ document.addEventListener('keydown', e => {
 });
 
 // ── Scroll effects ────────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
+function updateHeaderMode() {
+    const h       = document.getElementById('header');
+    const onHome  = document.getElementById('home-page').classList.contains('active');
+    const hero    = document.getElementById('hero-section');
+    const heroH   = hero ? hero.offsetHeight : 0;
+    const overHero = onHome && window.scrollY < heroH - 80;
+    const farDown  = window.scrollY > 60;
+
+    h.classList.toggle('hero-mode', overHero);
+    h.classList.toggle('scrolled',  !overHero && farDown);
     document.getElementById('back-top').classList.toggle('show', window.scrollY > 400);
-});
+}
+window.addEventListener('scroll', updateHeaderMode, { passive: true });
 
 // ── Hash routing ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
-    document.body.classList.add('ready');
     const hash = window.location.hash.replace('#', '');
     if (['home','saved','shop','contact'].includes(hash)) showPage(hash);
 });
+
+// ── Loader ────────────────────────────────────────────────────────
+(function () {
+    const ldrEl     = document.getElementById('loader');
+    const ldrCount  = document.getElementById('ldr-count');
+    const ldrFill   = document.getElementById('ldr-fill');
+    const ldrStatus = document.getElementById('ldr-status');
+    const ldrDate   = document.getElementById('ldr-date');
+    const hv        = document.getElementById('hero-video');
+
+    // Date stamp
+    ldrDate.textContent = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+
+    // Show terminal lines with delay
+    ['ldr-l1', 'ldr-l2', 'ldr-l3'].forEach((id, i) => {
+        setTimeout(() => document.getElementById(id).classList.add('show'), i * 380 + 120);
+    });
+
+    let count      = 0;
+    let videoReady = false;
+    let minDone    = false;
+    let finished   = false;
+    const statuses = ['INITIALIZING', 'LOADING ASSETS', 'CALIBRATING', 'RENDERING', 'LAUNCHING'];
+
+    function finishLoader() {
+        if (finished || !videoReady || !minDone) return;
+        finished = true;
+        clearInterval(countTimer);
+        ldrCount.textContent = '100';
+        ldrFill.style.width  = '100%';
+        ldrStatus.textContent = 'COMPLETE';
+        setTimeout(() => {
+            ldrEl.classList.add('done');
+            document.body.classList.add('ready');
+            updateHeaderMode();
+        }, 480);
+    }
+
+    // Minimum visible time so animation breathes
+    setTimeout(() => { minDone = true; finishLoader(); }, 2600);
+
+    // Video ready signal
+    if (hv) {
+        hv.addEventListener('canplaythrough', () => { videoReady = true; finishLoader(); }, { once: true });
+        hv.addEventListener('playing', () => hv.classList.add('playing'), { once: true });
+    } else {
+        videoReady = true;
+    }
+    // Hard fallback — never trap user more than 10s
+    setTimeout(() => { if (!videoReady) { videoReady = true; finishLoader(); } }, 10000);
+
+    // Counting animation — fast start, slows near 99
+    const countTimer = setInterval(() => {
+        if (count >= 99 || finished) return;
+        const speed = count < 60 ? (Math.random() * 4 + 2)
+                    : count < 85 ? (Math.random() * 1.8 + 0.6)
+                                 : (Math.random() * 0.5 + 0.1);
+        count = Math.min(count + speed, 99);
+        const r = Math.floor(count);
+        ldrCount.textContent = String(r).padStart(3, '0');
+        ldrFill.style.width  = r + '%';
+        ldrStatus.textContent = statuses[Math.min(Math.floor(r / 22), statuses.length - 2)];
+    }, 40);
+})();
 
 // ── Easter eggs ───────────────────────────────────────────────────
 console.log('%c🔬 Ravi Sauce Labs', 'font-size:18px;color:#2DD512;font-weight:bold;');
