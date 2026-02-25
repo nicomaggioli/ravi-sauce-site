@@ -656,22 +656,7 @@
             border-radius: var(--r);
             box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 24px 64px rgba(0,0,0,.75);
         }
-        /* MAIN — dominant right panel, bleeds to viewport edge */
-        .hud-main {
-            left: 30%;  top: 8vh;  right: 0;  bottom: 7vh;
-            z-index: 1;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-right: none;
-        }
-        /* PA — tall portrait, far left */
-        .hud-pa { left: 2%;  top: 9vh;    width: 13%;  height: 42vh;  z-index: 3; }
-        /* PB — square, right of PA */
-        .hud-pb { left: 16%; top: 9vh;    width: 12%;  height: 26vh;  z-index: 3; }
-        /* PC — overlaps left edge of main panel */
-        .hud-pc { left: 21%; top: 9vh;    width: 12%;  height: 20vh;  z-index: 5; }
-        /* PD — wide, bottom-left, anchored to bar */
-        .hud-pd { left: 2%;  bottom: 7vh; width: 26%;  height: 30vh;  z-index: 2; }
+        /* Panel positions set by JS on desktop */
 
         /* ── PANEL VIDEOS ── */
         .hud-vid {
@@ -802,30 +787,11 @@
         .hud-bar-count   { color: rgba(255,255,255,.22); border-right: none; }
         .hud-plus        { display: none; }
 
-        /* ── PANEL LETTER OVERLAYS (R–A–V–I–S) ── */
-        .panel-char {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22vh;
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: -0.04em;
-            color: rgba(255,255,255,.16);
-            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
-            pointer-events: none;
-            z-index: 8;
-            user-select: none;
+        /* ── DESKTOP DRAG HINT ── */
+        @media (hover: hover) and (min-width: 901px) {
+            .hud-panel { cursor: grab; transition: box-shadow .2s; }
+            .hud-panel.dragging { cursor: grabbing; box-shadow: 0 0 0 2px rgba(255,255,255,.2), 0 32px 80px rgba(0,0,0,.9); transition: none; }
         }
-        .hud-main .panel-char {
-            font-size: 65vh;
-            color: rgba(255,255,255,.06);
-        }
-        /* Hide on mobile — panels themselves are hidden */
-        @media (max-width: 900px) { .hud-pa .panel-char, .hud-pb .panel-char,
-            .hud-pc .panel-char, .hud-pd .panel-char { display: none; } }
 
         /* ── MOBILE ── */
         @media (max-width: 900px) {
@@ -976,7 +942,6 @@
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
-                <div class="panel-char">R</div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -985,13 +950,11 @@
                 </div>
             </div>
 
-            <!-- ── PANEL PB — A ── -->
             <div class="hud-panel hud-pb">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pb">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
-                <div class="panel-char">A</div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1000,13 +963,11 @@
                 </div>
             </div>
 
-            <!-- ── PANEL PC — V ── -->
             <div class="hud-panel hud-pc">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pc">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
-                <div class="panel-char">V</div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1015,13 +976,11 @@
                 </div>
             </div>
 
-            <!-- ── PANEL PD — I ── -->
             <div class="hud-panel hud-pd">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pd">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
-                <div class="panel-char">I</div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1030,13 +989,11 @@
                 </div>
             </div>
 
-            <!-- ── MAIN PANEL — S (primary cinematic view) ── -->
             <div class="hud-panel hud-main">
                 <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
-                <div class="panel-char">S</div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1699,6 +1656,87 @@ document.addEventListener('keydown', e => {
             }
         }, { once: true });
         v.addEventListener('playing', () => v.classList.add('playing'), { once: true });
+    });
+})();
+
+// ── Hero panels: random layout + mouse drag (desktop only) ────────
+(function () {
+    if (window.innerWidth <= 900) return;
+
+    const hero   = document.getElementById('hero-section');
+    const panels = [...document.querySelectorAll('.hud-panel')];
+    const PAD    = 20;   // px buffer from hero edges
+    const BAR_H  = 50;   // approx bottom bar height
+
+    // [minW, maxW, minH, maxH] as fraction of hero dimensions
+    // Order matches DOM: pa, pb, pc, pd, main
+    const SIZES = [
+        [0.11, 0.19, 0.28, 0.50],
+        [0.10, 0.17, 0.20, 0.38],
+        [0.09, 0.16, 0.18, 0.34],
+        [0.17, 0.28, 0.28, 0.48],
+        [0.32, 0.52, 0.52, 0.82],
+    ];
+
+    function place() {
+        const W = hero.offsetWidth;
+        const H = hero.offsetHeight;
+        panels.forEach((panel, i) => {
+            const [minW, maxW, minH, maxH] = SIZES[i];
+            const w = Math.round((minW + Math.random() * (maxW - minW)) * W);
+            const h = Math.round((minH + Math.random() * (maxH - minH)) * (H - BAR_H));
+            const left = Math.round(PAD + Math.random() * Math.max(0, W - w - PAD * 2));
+            const top  = Math.round(PAD + Math.random() * Math.max(0, H - BAR_H - h - PAD * 2));
+            panel.style.left   = left + 'px';
+            panel.style.top    = top  + 'px';
+            panel.style.width  = w    + 'px';
+            panel.style.height = h    + 'px';
+            panel.style.right  = 'auto';
+            panel.style.bottom = 'auto';
+            panel.style.zIndex = i + 1;
+        });
+    }
+
+    function initDrag() {
+        let highZ = panels.length + 1;
+        panels.forEach(panel => {
+            panel.addEventListener('mousedown', e => {
+                e.preventDefault();
+                const heroR = hero.getBoundingClientRect();
+                const offX  = e.clientX - heroR.left - parseInt(panel.style.left || 0);
+                const offY  = e.clientY - heroR.top  - parseInt(panel.style.top  || 0);
+
+                panel.classList.add('dragging');
+                panel.style.zIndex = ++highZ;
+
+                function onMove(e) {
+                    const heroR = hero.getBoundingClientRect();
+                    const W = hero.offsetWidth;
+                    const H = hero.offsetHeight;
+                    let left = e.clientX - heroR.left - offX;
+                    let top  = e.clientY - heroR.top  - offY;
+                    left = Math.max(PAD, Math.min(left, W - panel.offsetWidth  - PAD));
+                    top  = Math.max(PAD, Math.min(top,  H - BAR_H - panel.offsetHeight - PAD));
+                    panel.style.left = left + 'px';
+                    panel.style.top  = top  + 'px';
+                }
+
+                function onUp() {
+                    panel.classList.remove('dragging');
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup',  onUp);
+                }
+
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup',  onUp);
+            });
+        });
+    }
+
+    // Place after first paint so offsetWidth/Height are available
+    requestAnimationFrame(() => {
+        place();
+        initDrag();
     });
 })();
 
