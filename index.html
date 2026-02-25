@@ -397,8 +397,8 @@
             justify-content: center;
             height: 40px;
             padding: 0 20px;
-            background: var(--black);
-            color: #fff;
+            background: var(--green);
+            color: #000;
             border: none;
             border-radius: 20px;
             font-size: 15px;
@@ -407,7 +407,7 @@
             font-family: var(--font);
             transition: opacity .15s;
         }
-        .browse-link:hover { opacity: .75; }
+        .browse-link:hover { opacity: .8; }
 
         /* ── SHOP — COMING SOON ───────────────────────────────────── */
         .coming-soon {
@@ -833,14 +833,27 @@
         /* ── SOLO PRODUCT VIEW ────────────────────────────────────── */
         .solo-view { display: flex; flex-direction: column; min-height: calc(100vh - var(--nav-h)); padding: 0 0 60px; }
 
+        /* nav bar */
         .solo-nav-bar {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 0; border-bottom: 1px solid #1a1a1a;
+            padding: 16px 0; border-bottom: 1px solid #1a1a1a;
         }
+        .solo-nav-center { display: flex; align-items: center; gap: 16px; }
         .solo-counter {
             font-family: 'Courier New', monospace; font-size: 10px;
             letter-spacing: 3px; color: rgba(255,255,255,.3); text-transform: uppercase;
         }
+        .solo-live {
+            display: flex; align-items: center; gap: 5px;
+            font-family: 'Courier New', monospace; font-size: 8px;
+            letter-spacing: 2px; color: rgba(255,255,255,.22); text-transform: uppercase;
+        }
+        .solo-live-dot {
+            width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+            animation: live-pulse 2s ease-in-out infinite; flex-shrink: 0;
+        }
+        @keyframes live-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+
         .solo-arrow {
             width: 40px; height: 40px; border-radius: 20px;
             border: 1px solid #2a2a2a; background: transparent;
@@ -850,19 +863,65 @@
         }
         .solo-arrow:hover { border-color: var(--green); color: var(--green); background: rgba(45,213,18,.05); }
 
+        /* dot rail */
+        .solo-dot-rail {
+            display: flex; justify-content: center; gap: 7px;
+            padding: 14px 0; border-bottom: 1px solid #141414;
+        }
+        .solo-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #252525; border: none; cursor: pointer;
+            transition: background .25s, transform .25s; padding: 0;
+            flex-shrink: 0;
+        }
+        .solo-dot.active { background: var(--green); transform: scale(1.5); }
+        .solo-dot:hover:not(.active) { background: #444; }
+
+        /* body grid */
         .solo-body {
             display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
-            padding: 40px 0; align-items: start;
+            padding: 36px 0; align-items: start;
         }
         @media (max-width: 700px) { .solo-body { grid-template-columns: 1fr; gap: 28px; padding: 28px 0; } }
 
+        /* image column */
         .solo-img-col { display: flex; flex-direction: column; gap: 12px; position: sticky; top: calc(var(--nav-h) + 20px); }
+
         .solo-img-wrap {
             aspect-ratio: 1; background: #0d0d0d; border-radius: 20px;
             border: 1px solid #1a1a1a; overflow: hidden; position: relative;
             transition: border-color .3s;
         }
-        .solo-img-wrap:hover { border-color: #2a2a2a; }
+        .solo-img-wrap:hover { border-color: rgba(45,213,18,.3); }
+
+        /* 4-corner bracket marks */
+        .solo-img-wrap::after {
+            content: '';
+            position: absolute; inset: 12px; z-index: 4; pointer-events: none;
+            background:
+                linear-gradient(to right,  rgba(45,213,18,.55) 1px, transparent 1px) 0   0   / 20px 1px no-repeat,
+                linear-gradient(to bottom, rgba(45,213,18,.55) 1px, transparent 1px) 0   0   / 1px 20px no-repeat,
+                linear-gradient(to left,   rgba(45,213,18,.55) 1px, transparent 1px) 100% 0   / 20px 1px no-repeat,
+                linear-gradient(to bottom, rgba(45,213,18,.55) 1px, transparent 1px) 100% 0   / 1px 20px no-repeat,
+                linear-gradient(to right,  rgba(45,213,18,.55) 1px, transparent 1px) 0   100% / 20px 1px no-repeat,
+                linear-gradient(to top,    rgba(45,213,18,.55) 1px, transparent 1px) 0   100% / 1px 20px no-repeat,
+                linear-gradient(to left,   rgba(45,213,18,.55) 1px, transparent 1px) 100% 100% / 20px 1px no-repeat,
+                linear-gradient(to top,    rgba(45,213,18,.55) 1px, transparent 1px) 100% 100% / 1px 20px no-repeat;
+            opacity: 0; transition: opacity .3s;
+        }
+        .solo-img-wrap:hover::after { opacity: 1; }
+
+        /* subtle grid overlay on hover */
+        .solo-img-wrap::before {
+            content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(45,213,18,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45,213,18,.025) 1px, transparent 1px);
+            background-size: 44px 44px;
+            opacity: 0; transition: opacity .4s;
+        }
+        .solo-img-wrap:hover::before { opacity: 1; }
+
         .solo-img-wrap img {
             width: 100%; height: 100%; object-fit: contain; padding: 8%;
             filter: drop-shadow(0 4px 24px rgba(0,0,0,.8));
@@ -870,6 +929,16 @@
         }
         .solo-img-wrap:hover img { transform: scale(1.03); }
 
+        /* scan-flash when switching */
+        @keyframes solo-flash {
+            0%   { opacity:1 }
+            30%  { opacity:.15; filter:brightness(3) saturate(0); }
+            60%  { opacity:.8; }
+            100% { opacity:1; filter:none; }
+        }
+        .solo-img-wrap.flashing img { animation: solo-flash .35s ease; }
+
+        /* thumbs */
         .solo-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
         .solo-thumb {
             width: 56px; height: 56px; border-radius: 10px; border: 1px solid #1e1e1e;
@@ -879,8 +948,15 @@
         .solo-thumb.active { border-color: var(--green); }
         .solo-thumb img { width: 100%; height: 100%; object-fit: contain; }
 
+        /* info column */
         .solo-info-col { display: flex; flex-direction: column; gap: 18px; padding-top: 8px; }
+        @keyframes solo-info-in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+        .solo-info-col.entering { animation: solo-info-in .22s ease; }
 
+        .solo-catalog-ref {
+            font-family: 'Courier New', monospace; font-size: 8px;
+            letter-spacing: 2.5px; color: rgba(255,255,255,.18); text-transform: uppercase;
+        }
         .solo-spec {
             font-family: 'Courier New', monospace; font-size: 8px;
             letter-spacing: 3px; color: rgba(45,213,18,.7); text-transform: uppercase;
@@ -888,6 +964,18 @@
         .solo-name { font-size: 28px; font-weight: 700; color: #f0f0f0; letter-spacing: -0.5px; line-height: 1.15; }
         .solo-price { font-family: 'Courier New', monospace; font-size: 22px; color: var(--green); letter-spacing: 1px; }
         .solo-desc { font-size: 14px; line-height: 1.65; color: rgba(255,255,255,.45); }
+
+        /* data readout */
+        .solo-data-strip {
+            display: flex; gap: 0; border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
+        }
+        .solo-data-cell {
+            flex: 1; padding: 8px 12px; border-right: 1px solid #1e1e1e;
+            display: flex; flex-direction: column; gap: 3px;
+        }
+        .solo-data-cell:last-child { border-right: none; }
+        .solo-data-label { font-family: 'Courier New', monospace; font-size: 7px; letter-spacing: 2px; color: rgba(255,255,255,.25); text-transform: uppercase; }
+        .solo-data-value { font-family: 'Courier New', monospace; font-size: 11px; color: rgba(255,255,255,.6); letter-spacing: 1px; }
 
         .solo-size-label {
             font-family: 'Courier New', monospace; font-size: 8px;
@@ -966,8 +1054,8 @@
             align-self: flex-start;
             height: 40px;
             padding: 0 22px;
-            background: var(--black);
-            color: #fff;
+            background: var(--green);
+            color: #000;
             border: none;
             border-radius: 20px;
             font-size: 15px;
@@ -977,7 +1065,7 @@
             transition: opacity .15s;
             margin-top: 4px;
         }
-        .submit-btn:hover { opacity: .75; }
+        .submit-btn:hover { opacity: .8; }
 
 
         /* ── TOAST ────────────────────────────────────────────────── */
@@ -1411,13 +1499,13 @@
         .form-field input, .form-field textarea { color: #d0d0d0; border-bottom-color: #222; }
         .form-field input:focus, .form-field textarea:focus { border-bottom-color: var(--green); }
         .form-field input::placeholder, .form-field textarea::placeholder { color: #333; }
-        .submit-btn       { background: #d0d0d0; color: #0a0a0a; }
-        .submit-btn:hover { opacity: .75; }
+        .submit-btn       { background: var(--green); color: #000; }
+        .submit-btn:hover { opacity: .8; }
 
         .saved-empty-mono { color: #2a2a2a; }
         .saved-empty p    { color: #555; }
-        .browse-link      { background: #d0d0d0; color: #0a0a0a; }
-        .browse-link:hover { opacity: .75; }
+        .browse-link      { background: var(--green); color: #000; }
+        .browse-link:hover { opacity: .8; }
 
         .back-top         { background: #111; border-color: #222; color: #d0d0d0; }
         .back-top:hover   { background: var(--green); color: #000; }
@@ -1607,7 +1695,7 @@
 
             <div class="hud-panel hud-main">
                 <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto"
-                       onloadedmetadata="this.currentTime=6">
+                       onloadedmetadata="this.currentTime=4.5">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
@@ -1737,22 +1825,28 @@
             <div class="solo-view" id="solo-view">
                 <div class="solo-nav-bar">
                     <button class="solo-arrow" onclick="soloStep(-1)">←</button>
-                    <span class="solo-counter" id="solo-counter">01 / 01</span>
+                    <div class="solo-nav-center">
+                        <span class="solo-counter" id="solo-counter">01 / 01</span>
+                        <div class="solo-live"><span class="solo-live-dot"></span>LIVE CATALOG</div>
+                    </div>
                     <button class="solo-arrow" onclick="soloStep(1)">→</button>
                 </div>
+                <div class="solo-dot-rail" id="solo-dot-rail"></div>
                 <div class="solo-body">
                     <div class="solo-img-col">
-                        <div class="solo-img-wrap">
+                        <div class="solo-img-wrap" id="solo-img-wrap">
                             <img id="solo-img" src="" alt="">
                             <div class="shop-scan"></div>
                         </div>
                         <div class="solo-thumbs" id="solo-thumbs"></div>
                     </div>
-                    <div class="solo-info-col">
+                    <div class="solo-info-col" id="solo-info-col">
+                        <div class="solo-catalog-ref" id="solo-catalog-ref">SPECIMEN // —</div>
                         <span class="solo-spec" id="solo-spec"></span>
                         <h2 class="solo-name" id="solo-name"></h2>
                         <div class="solo-price" id="solo-price"></div>
                         <p class="solo-desc" id="solo-desc"></p>
+                        <div class="solo-data-strip" id="solo-data-strip"></div>
                         <div class="solo-size-label" id="solo-size-label">Select Size</div>
                         <div class="solo-sizes" id="solo-sizes"></div>
                         <button class="solo-add-btn" onclick="soloAddToCart()">Add to Cart</button>
@@ -1791,7 +1885,7 @@
                     <label class="form-field-label">MESSAGE //</label>
                     <textarea rows="5" required></textarea>
                 </div>
-                <button type="submit" class="submit-btn">TRANSMIT →</button>
+                <button type="submit" class="submit-btn">Send</button>
             </form>
         </div>
     </div>
@@ -2078,6 +2172,7 @@ const images = [
     'images/v-clip-a.gif',
     'images/v-clip-b.gif',
     'images/v-clip-c.gif',
+    'videos/v-new.mp4',
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -2338,19 +2433,29 @@ function renderSoloShop() {
     const total = PRODUCTS.length;
     soloSize = p.sizes.length === 1 ? p.sizes[0] : null;
 
-    document.getElementById('solo-counter').textContent =
-        String(soloIdx + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
-    document.getElementById('shop-count').textContent =
-        String(soloIdx + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0') + ' specimens';
-    document.getElementById('solo-spec').textContent  = p.spec;
-    document.getElementById('solo-name').textContent  = p.name;
-    document.getElementById('solo-price').textContent = '$' + p.price;
-    document.getElementById('solo-desc').textContent  = p.desc;
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('solo-counter').textContent = pad(soloIdx+1) + ' / ' + pad(total);
+    document.getElementById('shop-count').textContent   = pad(soloIdx+1) + ' / ' + pad(total) + ' specimens';
+    document.getElementById('solo-catalog-ref').textContent = 'SPECIMEN // ' + (p.id || '—').toUpperCase();
+    document.getElementById('solo-spec').textContent   = p.spec;
+    document.getElementById('solo-name').textContent   = p.name;
+    document.getElementById('solo-price').textContent  = '$' + p.price;
+    document.getElementById('solo-desc').textContent   = p.desc;
     document.getElementById('solo-size-label').textContent = 'Select ' + (p.variantLabel || 'Size');
 
+    // Data strip
+    const strip = document.getElementById('solo-data-strip');
+    strip.innerHTML = [
+        ['CAT',  p.cat  || '—'],
+        ['PRICE','$' + p.price],
+        ['UNITS', p.sizes.length + ' opts'],
+    ].map(([l,v]) => `<div class="solo-data-cell"><span class="solo-data-label">${l}</span><span class="solo-data-value">${v}</span></div>`).join('');
+
+    // Image
     const img = document.getElementById('solo-img');
     img.src = p.imgs[0]; img.alt = p.name;
 
+    // Thumbs
     const thumbs = document.getElementById('solo-thumbs');
     thumbs.innerHTML = '';
     if (p.imgs.length > 1) {
@@ -2360,12 +2465,13 @@ function renderSoloShop() {
             btn.innerHTML = `<img src="${src}" alt="">`;
             btn.onclick = () => {
                 img.src = src;
-                thumbs.querySelectorAll('.solo-thumb').forEach((t, j) => t.classList.toggle('active', j === i));
+                thumbs.querySelectorAll('.solo-thumb').forEach((t,j) => t.classList.toggle('active', j===i));
             };
             thumbs.appendChild(btn);
         });
     }
 
+    // Sizes
     const sizesEl = document.getElementById('solo-sizes');
     sizesEl.innerHTML = '';
     p.sizes.forEach(sz => {
@@ -2380,15 +2486,50 @@ function renderSoloShop() {
         sizesEl.appendChild(btn);
     });
 
-    const bFact = BRAILLE_FACTS[soloIdx % BRAILLE_FACTS.length];
-    const bTitle = UNIVERSE_FACTS[soloIdx % UNIVERSE_FACTS.length];
-    const brailleEl = document.getElementById('solo-braille');
-    brailleEl.textContent = bFact; brailleEl.title = bTitle;
+    // Braille
+    const bEl = document.getElementById('solo-braille');
+    bEl.textContent = BRAILLE_FACTS[soloIdx % BRAILLE_FACTS.length];
+    bEl.title       = UNIVERSE_FACTS[soloIdx % UNIVERSE_FACTS.length];
     document.getElementById('solo-idx').textContent = circledPair(soloIdx);
+
+    // Dot rail
+    const rail = document.getElementById('solo-dot-rail');
+    if (rail) {
+        if (rail.children.length !== total) {
+            rail.innerHTML = '';
+            PRODUCTS.forEach((_, i) => {
+                const d = document.createElement('button');
+                d.className = 'solo-dot';
+                d.title = PRODUCTS[i].name;
+                d.onclick = () => soloJump(i);
+                rail.appendChild(d);
+            });
+        }
+        rail.querySelectorAll('.solo-dot').forEach((d,i) => d.classList.toggle('active', i===soloIdx));
+    }
+
+    // Animate info in
+    const info = document.getElementById('solo-info-col');
+    info.classList.remove('entering');
+    void info.offsetWidth;
+    info.classList.add('entering');
 }
 
 function soloStep(dir) {
+    const wrap = document.getElementById('solo-img-wrap');
+    if (wrap) {
+        wrap.classList.add('flashing');
+        setTimeout(() => wrap.classList.remove('flashing'), 400);
+    }
     soloIdx = (soloIdx + dir + PRODUCTS.length) % PRODUCTS.length;
+    renderSoloShop();
+}
+
+function soloJump(i) {
+    if (i === soloIdx) return;
+    const wrap = document.getElementById('solo-img-wrap');
+    if (wrap) { wrap.classList.add('flashing'); setTimeout(() => wrap.classList.remove('flashing'), 400); }
+    soloIdx = i;
     renderSoloShop();
 }
 
