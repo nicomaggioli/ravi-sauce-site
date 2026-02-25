@@ -54,20 +54,28 @@
             border-bottom-color: transparent;
         }
 
-        .logo {
+        .logo-wrap {
             position: absolute;
             left: 24px;
+            perspective: 500px;
+        }
+        .logo {
             width: 44px; height: 44px;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             border: none;
-            background: transparent;
-            border-radius: 0;
-            perspective: 320px;
+            background: rgba(20,20,20,.85);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            animation: logoSpin3d 6s linear infinite;
+            box-shadow:
+                0 0 0 1.5px rgba(45,213,18,.45),
+                0 0 18px rgba(45,213,18,.18),
+                inset 0 0 12px rgba(0,0,0,.6);
         }
         .logo img {
-            width: 100%; height: 100%; object-fit: contain;
-            animation: logoSpin3d 7s linear infinite;
+            width: 72%; height: 72%; object-fit: contain;
+            border-radius: 50%;
         }
         @keyframes logoSpin3d {
             0%   { transform: rotateY(0deg); }
@@ -204,6 +212,15 @@
             padding-right: 18px;
             padding-bottom: 40px;
             min-height: 100vh;
+        }
+        /* Mobile padding matches masonry gutter */
+        @media (max-width: 900px) {
+            .main { padding-left: 8px; padding-right: 8px; }
+            .hero { margin-left: -8px; margin-right: -8px; }
+        }
+        @media (max-width: 600px) {
+            .main { padding-left: 6px; padding-right: 6px; }
+            .hero { margin-left: -6px; margin-right: -6px; }
         }
 
         .page { display: none; opacity: 0; transform: translateY(16px); }
@@ -702,6 +719,8 @@
         .hud-pb   .scan-line { animation-delay: -1.4s;  }
         .hud-pc   .scan-line { animation-delay: -3.5s;  }
         .hud-pd   .scan-line { animation-delay: -5.1s;  }
+        .hud-pe   .scan-line { animation-delay: -4.2s;  }
+        .hud-pf   .scan-line { animation-delay: -6.3s;  }
         .hud-main .scan-line { animation-delay: -2.6s;  }
 
         /* ── PANEL UI LAYER (corners, label, specimen tag) ── */
@@ -756,7 +775,7 @@
             position: absolute; left: 2%; bottom: 12vh;
             font-size: 7.5px; letter-spacing: 1.5px; line-height: 2.1;
             color: rgba(255,255,255,.2);
-            pointer-events: none; z-index: 15;
+            pointer-events: none; z-index: 0;
         }
         .hud-sidebar-sep { opacity: .2; }
 
@@ -766,7 +785,7 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 7px; letter-spacing: 1.5px; line-height: 2;
             color: rgba(255,255,255,.15);
-            pointer-events: none; z-index: 15;
+            pointer-events: none; z-index: 0;
             text-transform: uppercase;
         }
         .hud-amb-g   { color: rgba(45,213,18,.30); }
@@ -801,7 +820,7 @@
             border: 1px solid rgba(255,255,255,.1);
             display: flex; align-items: center; justify-content: center;
             font-size: 7px; color: rgba(255,255,255,.14);
-            pointer-events: none; z-index: 15;
+            pointer-events: none; z-index: 0;
         }
         .hud-x-bl { left: 2%;  bottom: calc(7vh + 3px); }
         .hud-x-br { right: 3%; bottom: calc(7vh + 3px); }
@@ -837,13 +856,10 @@
 
         /* ── MOBILE ── */
         @media (max-width: 900px) {
-            .hud-pa, .hud-pb, .hud-pc, .hud-pd,
+            /* pa + pb + main are positioned by JS; hide the rest */
+            .hud-pc, .hud-pd, .hud-pe, .hud-pf,
             .hud-sidebar, .hud-x-bl, .hud-x-br,
             .hud-ambient, .hud-story { display: none; }
-            .hud-main {
-                left: 0; top: 0; right: 0; bottom: 0;
-                border-radius: 0; border: none; box-shadow: none;
-            }
         }
         @media (max-width: 600px) {
             .hud-bar-tags, .hud-bar-count { display: none; }
@@ -929,9 +945,11 @@
 
 <!-- HEADER -->
 <header class="header" id="header">
-    <button class="logo" onclick="showPage('home')" aria-label="Home">
-        <img src="https://i.imgur.com/CsYuIfd.png" alt="Ravi Sauce">
-    </button>
+    <div class="logo-wrap">
+        <button class="logo" onclick="showPage('home')" aria-label="Home">
+            <img src="https://i.imgur.com/CsYuIfd.png" alt="Ravi Sauce">
+        </button>
+    </div>
 
     <nav class="nav-tabs">
         <button class="nav-tab active" data-page="home"    onclick="showPage('home')">Home</button>
@@ -979,10 +997,10 @@
         <!-- RAVISAUCE LAB — HERO -->
         <div class="hero" id="hero-section">
 
-            <!-- ── PANEL PA — R ── -->
+            <!-- ── PANEL PA ── -->
             <div class="hud-panel hud-pa">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pa">
-                    <source src="videos/animation-reel.mp4?feed=a" type="video/mp4">
+                    <source src="videos/flag-loop.mp4?feed=a" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -993,9 +1011,10 @@
                 </div>
             </div>
 
+            <!-- ── PANEL PB ── -->
             <div class="hud-panel hud-pb">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pb">
-                    <source src="videos/animation-reel.mp4?feed=b" type="video/mp4">
+                    <source src="videos/rock-loop.mp4?feed=b" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -1006,9 +1025,10 @@
                 </div>
             </div>
 
+            <!-- ── PANEL PC ── -->
             <div class="hud-panel hud-pc">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pc">
-                    <source src="videos/animation-reel.mp4?feed=c" type="video/mp4">
+                    <source src="videos/astro-final.mp4?feed=c" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -1019,6 +1039,7 @@
                 </div>
             </div>
 
+            <!-- ── PANEL PD ── -->
             <div class="hud-panel hud-pd">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pd">
                     <source src="videos/animation-reel.mp4?feed=d" type="video/mp4">
@@ -1032,6 +1053,35 @@
                 </div>
             </div>
 
+            <!-- ── PANEL PE ── -->
+            <div class="hud-panel hud-pe">
+                <video autoplay muted loop playsinline class="hud-vid hud-vid-pe">
+                    <source src="videos/rock-loop.mp4?feed=e" type="video/mp4">
+                </video>
+                <div class="scan-line"></div>
+                <div class="panel-ui">
+                    <div class="panel-label">
+                        <span class="pl-dot"></span>
+                        <span class="pl-id">CAM—E</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PANEL PF ── -->
+            <div class="hud-panel hud-pf">
+                <video autoplay muted loop playsinline class="hud-vid hud-vid-pf">
+                    <source src="videos/astro-final.mp4?feed=f" type="video/mp4">
+                </video>
+                <div class="scan-line"></div>
+                <div class="panel-ui">
+                    <div class="panel-label">
+                        <span class="pl-dot"></span>
+                        <span class="pl-id">CAM—F</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── PANEL MAIN ── -->
             <div class="hud-panel hud-main">
                 <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
@@ -1746,37 +1796,56 @@ document.addEventListener('keydown', e => {
     });
 })();
 
-// ── Hero panels: random layout + mouse drag (desktop only) ────────
+// ── Hero panels: designed layout + drag (mouse desktop, touch mobile) ─
 (function () {
-    if (window.innerWidth <= 900) return;
+    const hero  = document.getElementById('hero-section');
+    const isMob = window.innerWidth <= 900;
+    const PAD   = 12;
+    const BAR_H = 50;
+    const NAV_H = 74;  // nav height + gap — keep panels below this on mobile
 
-    const hero   = document.getElementById('hero-section');
-    const panels = [...document.querySelectorAll('.hud-panel')];
-    const PAD    = 20;   // px buffer from hero edges
-    const BAR_H  = 50;   // approx bottom bar height
+    // On mobile: show pa + pb + main (3 panels)
+    // On desktop: all 7 panels
+    const all = [...document.querySelectorAll('.hud-panel')];
+    const panels = isMob
+        ? all.filter(p => p.classList.contains('hud-pa') ||
+                          p.classList.contains('hud-pb') ||
+                          p.classList.contains('hud-main'))
+        : all;
 
-    // Designed editorial layout — [leftF, topF, widthF, heightF, wobblePx]
-    // MAIN starts at 20% so PC/PD (ending at ~27%) overlap its left edge.
-    // Z-indices: main=1 (back), pa/pb=3, pc/pd=4 (front — they sit on top of main).
-    const LAYOUTS = [
-        [0.02, 0.05, 0.13, 0.50, 14],  // pa — tall portrait, far left
-        [0.02, 0.58, 0.13, 0.32, 14],  // pb — small, same column below pa
-        [0.16, 0.05, 0.10, 0.29, 10],  // pc — overlaps into main's left edge
-        [0.16, 0.37, 0.10, 0.30, 10],  // pd — overlaps into main's left edge
-        [0.20, 0.04, 0.76, 0.88,  8],  // main — dominant, starts behind pc/pd
+    // [leftF, topF, widthF, heightF, wobblePx]
+    const DESKTOP_L = [
+        [0.01, 0.02, 0.12, 0.48, 16],  // pa — tall portrait, far left
+        [0.01, 0.53, 0.10, 0.27, 14],  // pb — short square, below pa
+        [0.14, 0.04, 0.08, 0.34, 12],  // pc — thin sliver overlapping main
+        [0.14, 0.42, 0.09, 0.40, 12],  // pd — taller sliver below pc
+        [0.75, 0.04, 0.13, 0.22, 18],  // pe — small floating top-right
+        [0.76, 0.60, 0.21, 0.32, 16],  // pf — wider bottom-right
+        [0.19, 0.03, 0.74, 0.90,  8],  // main — dominant center
     ];
-    const Z_ORDER = [3, 3, 4, 4, 1]; // small panels float in front of main
+    const MOBILE_L = [
+        [0.04, 0.13, 0.44, 0.38, 12],  // pa — medium, upper-left
+        [0.52, 0.52, 0.42, 0.35, 10],  // pb — medium, lower-right
+        [0.07, 0.10, 0.78, 0.65,  8],  // main — large, central
+    ];
+    const DESKTOP_Z = [3, 3, 4, 4, 5, 5, 1];
+    const MOBILE_Z  = [4, 4, 1];
+
+    const LAYOUTS = isMob ? MOBILE_L  : DESKTOP_L;
+    const Z_ORDER = isMob ? MOBILE_Z  : DESKTOP_Z;
+
+    function wobble(px) { return Math.round((Math.random() - 0.5) * 2 * px); }
 
     function place() {
         const W = hero.offsetWidth;
         const H = hero.offsetHeight;
-        const wobble = (px) => Math.round((Math.random() - 0.5) * 2 * px);
+        const minTop = isMob ? NAV_H : PAD;
         panels.forEach((panel, i) => {
             const [lf, tf, wf, hf, wob] = LAYOUTS[i];
             const w    = Math.round(wf * W);
             const h    = Math.round(hf * (H - BAR_H));
             const left = Math.max(PAD, Math.round(lf * W) + wobble(wob));
-            const top  = Math.max(PAD, Math.round(tf * (H - BAR_H)) + wobble(wob));
+            const top  = Math.max(minTop, Math.round(tf * (H - BAR_H)) + wobble(wob));
             panel.style.left   = left + 'px';
             panel.style.top    = top  + 'px';
             panel.style.width  = w    + 'px';
@@ -1788,46 +1857,65 @@ document.addEventListener('keydown', e => {
     }
 
     function initDrag() {
-        let highZ = panels.length + 1;
+        let highZ = 10;
         panels.forEach(panel => {
-            panel.addEventListener('mousedown', e => {
-                e.preventDefault();
-                const heroR = hero.getBoundingClientRect();
-                const offX  = e.clientX - heroR.left - parseInt(panel.style.left || 0);
-                const offY  = e.clientY - heroR.top  - parseInt(panel.style.top  || 0);
+            if (isMob) {
+                // ── Touch drag ──
+                let sx, sy, sl, st;
+                panel.addEventListener('touchstart', e => {
+                    sx = e.touches[0].clientX;
+                    sy = e.touches[0].clientY;
+                    sl = parseInt(panel.style.left) || 0;
+                    st = parseInt(panel.style.top)  || 0;
+                    panel.style.zIndex = ++highZ;
+                }, { passive: true });
 
-                panel.classList.add('dragging');
-                panel.style.zIndex = ++highZ;
-
-                function onMove(e) {
-                    const heroR = hero.getBoundingClientRect();
+                panel.addEventListener('touchmove', e => {
+                    e.preventDefault();
                     const W = hero.offsetWidth;
                     const H = hero.offsetHeight;
-                    let left = e.clientX - heroR.left - offX;
-                    let top  = e.clientY - heroR.top  - offY;
-                    left = Math.max(PAD, Math.min(left, W - panel.offsetWidth  - PAD));
-                    top  = Math.max(PAD, Math.min(top,  H - BAR_H - panel.offsetHeight - PAD));
-                    panel.style.left = left + 'px';
-                    panel.style.top  = top  + 'px';
-                }
+                    let l = sl + (e.touches[0].clientX - sx);
+                    let t = st + (e.touches[0].clientY - sy);
+                    l = Math.max(PAD, Math.min(l, W - panel.offsetWidth  - PAD));
+                    t = Math.max(NAV_H, Math.min(t, H - BAR_H - panel.offsetHeight - PAD));
+                    panel.style.left = l + 'px';
+                    panel.style.top  = t + 'px';
+                }, { passive: false });
 
-                function onUp() {
-                    panel.classList.remove('dragging');
-                    document.removeEventListener('mousemove', onMove);
-                    document.removeEventListener('mouseup',  onUp);
-                }
+            } else {
+                // ── Mouse drag ──
+                panel.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    const heroR = hero.getBoundingClientRect();
+                    const offX  = e.clientX - heroR.left - parseInt(panel.style.left || 0);
+                    const offY  = e.clientY - heroR.top  - parseInt(panel.style.top  || 0);
+                    panel.classList.add('dragging');
+                    panel.style.zIndex = ++highZ;
 
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup',  onUp);
-            });
+                    function onMove(e) {
+                        const heroR = hero.getBoundingClientRect();
+                        const W = hero.offsetWidth;
+                        const H = hero.offsetHeight;
+                        let l = e.clientX - heroR.left - offX;
+                        let t = e.clientY - heroR.top  - offY;
+                        l = Math.max(PAD, Math.min(l, W - panel.offsetWidth  - PAD));
+                        t = Math.max(PAD, Math.min(t, H - BAR_H - panel.offsetHeight - PAD));
+                        panel.style.left = l + 'px';
+                        panel.style.top  = t + 'px';
+                    }
+                    function onUp() {
+                        panel.classList.remove('dragging');
+                        document.removeEventListener('mousemove', onMove);
+                        document.removeEventListener('mouseup',  onUp);
+                    }
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup',  onUp);
+                });
+            }
         });
     }
 
-    // Place after first paint so offsetWidth/Height are available
-    requestAnimationFrame(() => {
-        place();
-        initDrag();
-    });
+    requestAnimationFrame(() => { place(); initDrag(); });
 })();
 
 // ── Init ──────────────────────────────────────────────────────────
