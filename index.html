@@ -1062,6 +1062,7 @@
         .hud-vid-pb   { object-position: 70% 20%; }
         .hud-vid-pc   { object-position: 80% 65%; }
         .hud-vid-pd   { object-position: 35% 75%; }
+        .hud-vid-pg   { object-fit: contain; background: #000; }
 
         /* ── SCAN LINE (moves top → bottom, different timing per panel) ── */
         @keyframes scan {
@@ -1484,7 +1485,7 @@
 
             <!-- ── PANEL MAIN ── -->
             <div class="hud-panel hud-pg">
-                <video autoplay muted loop playsinline preload="auto">
+                <video autoplay muted loop playsinline preload="auto" class="hud-vid hud-vid-pg">
                     <source src="videos/ravi-new.mp4?feed=g" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
