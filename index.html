@@ -63,8 +63,16 @@
             border: none;
             background: transparent;
             border-radius: 0;
+            perspective: 320px;
         }
-        .logo img { width: 100%; height: 100%; object-fit: contain; }
+        .logo img {
+            width: 100%; height: 100%; object-fit: contain;
+            animation: logoSpin3d 7s linear infinite;
+        }
+        @keyframes logoSpin3d {
+            0%   { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
 
         /* ── NAV ─────────────────────────────────────────────────── */
         .nav-tabs { display: flex; gap: 4px; }
@@ -763,9 +771,29 @@
         }
         .hud-amb-g   { color: rgba(45,213,18,.30); }
         .hud-amb-sep { opacity: .25; display: block; margin: 2px 0; }
-        /* Left-side only — tl sits top-left, ml floats mid-left */
-        .hud-amb-tl  { top: 4vh;  left: 2%; }
-        .hud-amb-ml  { top: 42%;  left: 2%; transform: translateY(-50%); }
+        /* Left-side only — both start below the nav bar */
+        .hud-amb-tl  { top: calc(var(--nav-h) + 10px); left: 2%; }
+        .hud-amb-ml  { top: 50%; left: 2%; transform: translateY(-50%); }
+
+        /* ── STORY BACKGROUND TEXT ── */
+        .hud-story {
+            position: absolute;
+            top: calc(var(--nav-h) + 6px);
+            left: 0; right: 0;
+            bottom: 8vh;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 6.5px;
+            letter-spacing: 1.2px;
+            line-height: 2.6;
+            color: rgba(255,255,255,.048);
+            pointer-events: none;
+            z-index: 0;
+            text-transform: uppercase;
+            padding: 0 2%;
+            column-count: 3;
+            column-gap: 2%;
+        }
 
         /* ── CORNER X DECO ── */
         .hud-x-deco {
@@ -811,7 +839,7 @@
         @media (max-width: 900px) {
             .hud-pa, .hud-pb, .hud-pc, .hud-pd,
             .hud-sidebar, .hud-x-bl, .hud-x-br,
-            .hud-ambient { display: none; }
+            .hud-ambient, .hud-story { display: none; }
             .hud-main {
                 left: 0; top: 0; right: 0; bottom: 0;
                 border-radius: 0; border: none; box-shadow: none;
@@ -1016,6 +1044,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- STORY BACKGROUND FILL TEXT -->
+            <div class="hud-story">RAVI SAUCE IS SEARCHING FOR THE HIDDEN CODE OF THE UNIVERSE — THROUGH EXPERIMENTATION WITH DIFFERENT FABRICS, MATERIALS, AND MEDIUMS — CREATING SOMETHING SO UNBELIEVABLY EXTRAORDINARY THAT IT TRANSCENDS THE ORDINARY — A CURIOUS EXPLORER AT THE INTERSECTION OF NATURE AND SCIENCE — THE FIBONACCI SPIRAL LIVES IN EVERY LEAF, EVERY GALAXY, EVERY FINGERPRINT — THE GOLDEN RATIO φ = 1.618 APPEARS IN THE ARCHITECTURE OF EVERYTHING BEAUTIFUL — OBSERVING, QUESTIONING, TRANSLATING THE INVISIBLE LANGUAGE OF THE UNIVERSE INTO SOMETHING TANGIBLE — SOMETHING YOU CAN FEEL — SOMETHING YOU CAN SEE — SOMETHING YOU CAN WEAR — THE HIDDEN CODE IS ALREADY HERE — WE ARE JUST LEARNING TO READ IT — THE UNIVERSE WRITES IN MATHEMATICS AND WE ARE LEARNING ITS ALPHABET — FROM THE SPIRAL OF A NAUTILUS TO THE ARMS OF A GALAXY — FROM THE BRANCHING OF A TREE TO THE HELIX OF DNA — THE SAME PATTERN REPEATS AT EVERY SCALE — NATURE IS THE ORIGINAL DESIGNER — RAVI SAUCE IS THE STUDENT — THE OBSERVER — THE TRANSLATOR — CURIOUS ABOUT WHAT LIES BENEATH THE SURFACE OF THINGS — WHAT CONNECTS THE MACRO TO THE MICRO — WHAT MAKES SOMETHING EXTRAORDINARY — THE ANSWER IS PATTERN — REPETITION — PROPORTION — THE UNIVERSE COMPUTES ITSELF THROUGH GEOMETRY AND WE ARE HERE TO WITNESS IT — AND TO CREATE — /// RAVI SAUCE IS SEARCHING FOR THE HIDDEN CODE OF THE UNIVERSE — THROUGH EXPERIMENTATION WITH DIFFERENT FABRICS, MATERIALS, AND MEDIUMS — CREATING SOMETHING SO UNBELIEVABLY EXTRAORDINARY THAT IT TRANSCENDS THE ORDINARY — A CURIOUS EXPLORER AT THE INTERSECTION OF NATURE AND SCIENCE — THE FIBONACCI SPIRAL LIVES IN EVERY LEAF, EVERY GALAXY, EVERY FINGERPRINT — THE GOLDEN RATIO φ = 1.618 APPEARS IN THE ARCHITECTURE OF EVERYTHING BEAUTIFUL — OBSERVING, QUESTIONING, TRANSLATING THE INVISIBLE LANGUAGE OF THE UNIVERSE INTO SOMETHING TANGIBLE — SOMETHING YOU CAN FEEL — SOMETHING YOU CAN SEE — SOMETHING YOU CAN WEAR — THE HIDDEN CODE IS ALREADY HERE — WE ARE JUST LEARNING TO READ IT — THE UNIVERSE WRITES IN MATHEMATICS AND WE ARE LEARNING ITS ALPHABET — FROM THE SPIRAL OF A NAUTILUS TO THE ARMS OF A GALAXY — FROM THE BRANCHING OF A TREE TO THE HELIX OF DNA — THE SAME PATTERN REPEATS AT EVERY SCALE — NATURE IS THE ORIGINAL DESIGNER — RAVI SAUCE IS THE STUDENT — THE OBSERVER — THE TRANSLATOR — CURIOUS ABOUT WHAT LIES BENEATH THE SURFACE OF THINGS — WHAT CONNECTS THE MACRO TO THE MICRO — WHAT MAKES SOMETHING EXTRAORDINARY — THE ANSWER IS PATTERN — REPETITION — PROPORTION — THE UNIVERSE COMPUTES ITSELF THROUGH GEOMETRY AND WE ARE HERE TO WITNESS IT — AND TO CREATE — /// RAVI SAUCE IS SEARCHING FOR THE HIDDEN CODE OF THE UNIVERSE — THROUGH EXPERIMENTATION WITH DIFFERENT FABRICS, MATERIALS, AND MEDIUMS — CREATING SOMETHING SO UNBELIEVABLY EXTRAORDINARY THAT IT TRANSCENDS THE ORDINARY — A CURIOUS EXPLORER AT THE INTERSECTION OF NATURE AND SCIENCE — THE FIBONACCI SPIRAL LIVES IN EVERY LEAF, EVERY GALAXY, EVERY FINGERPRINT — THE GOLDEN RATIO φ = 1.618 APPEARS IN THE ARCHITECTURE OF EVERYTHING BEAUTIFUL — OBSERVING, QUESTIONING, TRANSLATING THE INVISIBLE LANGUAGE OF THE UNIVERSE INTO SOMETHING TANGIBLE — SOMETHING YOU CAN FEEL — SOMETHING YOU CAN SEE — SOMETHING YOU CAN WEAR — THE HIDDEN CODE IS ALREADY HERE — WE ARE JUST LEARNING TO READ IT — THE UNIVERSE WRITES IN MATHEMATICS AND WE ARE LEARNING ITS ALPHABET — FROM THE SPIRAL OF A NAUTILUS TO THE ARMS OF A GALAXY — FROM THE BRANCHING OF A TREE TO THE HELIX OF DNA — THE SAME PATTERN REPEATS AT EVERY SCALE — NATURE IS THE ORIGINAL DESIGNER — RAVI SAUCE IS THE STUDENT — THE OBSERVER — THE TRANSLATOR — CURIOUS ABOUT WHAT LIES BENEATH THE SURFACE OF THINGS — WHAT CONNECTS THE MACRO TO THE MICRO — WHAT MAKES SOMETHING EXTRAORDINARY — THE ANSWER IS PATTERN — REPETITION — PROPORTION — THE UNIVERSE COMPUTES ITSELF THROUGH GEOMETRY AND WE ARE HERE TO WITNESS IT — AND TO CREATE —</div>
 
             <!-- AMBIENT LAB TEXT — left side only -->
 
@@ -1725,16 +1756,16 @@ document.addEventListener('keydown', e => {
     const BAR_H  = 50;   // approx bottom bar height
 
     // Designed editorial layout — [leftF, topF, widthF, heightF, wobblePx]
-    // Panels: pa (tall portrait left), pb (small below pa), pc (thin strip top),
-    //         pd (thin strip bottom), main (dominant right)
-    // A small wobble keeps each refresh slightly different while always looking good.
+    // MAIN starts at 20% so PC/PD (ending at ~27%) overlap its left edge.
+    // Z-indices: main=1 (back), pa/pb=3, pc/pd=4 (front — they sit on top of main).
     const LAYOUTS = [
         [0.02, 0.05, 0.13, 0.50, 14],  // pa — tall portrait, far left
         [0.02, 0.58, 0.13, 0.32, 14],  // pb — small, same column below pa
-        [0.17, 0.05, 0.08, 0.30, 10],  // pc — thin strip, top center-left
-        [0.17, 0.37, 0.08, 0.30, 10],  // pd — thin strip, bottom center-left
-        [0.27, 0.04, 0.70, 0.88,  8],  // main — dominant right panel
+        [0.16, 0.05, 0.10, 0.29, 10],  // pc — overlaps into main's left edge
+        [0.16, 0.37, 0.10, 0.30, 10],  // pd — overlaps into main's left edge
+        [0.20, 0.04, 0.76, 0.88,  8],  // main — dominant, starts behind pc/pd
     ];
+    const Z_ORDER = [3, 3, 4, 4, 1]; // small panels float in front of main
 
     function place() {
         const W = hero.offsetWidth;
@@ -1752,7 +1783,7 @@ document.addEventListener('keydown', e => {
             panel.style.height = h    + 'px';
             panel.style.right  = 'auto';
             panel.style.bottom = 'auto';
-            panel.style.zIndex = i + 1;
+            panel.style.zIndex = Z_ORDER[i];
         });
     }
 
