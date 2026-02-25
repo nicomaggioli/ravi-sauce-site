@@ -457,152 +457,82 @@
         .cs-hint { font-size: 11px; letter-spacing: 2px; color: var(--g3); text-transform: uppercase; }
 
         /* ── SHOP ─────────────────────────────────────────────────── */
-        .shop-wrap { min-height: calc(100vh - var(--nav-h)); }
-
-        /* Hero */
-        .shop-hero {
-            position: relative;
-            width: calc(100% + 36px);
-            margin-left: -18px;
-            margin-top: calc(-1 * (var(--nav-h) + 4px));
-            height: 58vh; min-height: 380px;
-            overflow: hidden;
-            background: #000;
-            border-radius: 0;
-        }
-        .shop-hero-bg {
-            width: 100%; height: 100%;
-            object-fit: cover; display: block;
-            opacity: .72;
-            filter: grayscale(20%);
-        }
-        .shop-hero-brand {
-            position: absolute;
-            bottom: 56px; left: 20px;
-            font-size: clamp(56px, 11vw, 120px);
-            font-weight: 900;
-            line-height: .88;
-            color: #fff;
-            letter-spacing: -4px;
-            pointer-events: none;
-            text-transform: uppercase;
-        }
-        .shop-hero-subnav {
-            position: absolute;
-            bottom: 18px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255,255,255,.12);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,.22);
-            border-radius: 100px;
-            padding: 6px 18px 6px 6px;
-            font-size: 11.5px; letter-spacing: .6px;
-            color: rgba(255,255,255,.85);
-            white-space: nowrap;
-        }
-        .shop-hero-pill {
-            background: #fff; color: #111;
-            border-radius: 100px; padding: 3px 14px;
-            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+        /* ── SHOP ─────────────────────────────────────────────────── */
+        .shop-wrap {
+            min-height: calc(100vh - var(--nav-h));
+            background: #f6f6f4;
+            color: #111;
+            padding-bottom: 80px;
         }
 
-        /* Section */
-        .shop-section { padding: 32px 0 0; }
-        .shop-section-title {
-            font-size: clamp(20px, 3.5vw, 32px);
-            font-weight: 800; letter-spacing: -1px;
-            margin-bottom: 18px; color: var(--black);
+        /* Header row */
+        .shop-hd {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 16px;
+            padding: 36px 0 24px;
         }
+        .shop-hd-title {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: #111;
+        }
+        .shop-hd-count { font-size: 11px; color: #aaa; letter-spacing: 1px; }
+
+        /* Category filter */
+        .shop-filter {
+            display: flex; gap: 6px; padding-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .shop-filter-btn {
+            height: 30px; padding: 0 14px;
+            border: 1px solid #ddd; border-radius: 100px;
+            background: transparent;
+            font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase;
+            color: #888; cursor: pointer;
+            transition: border-color .15s, color .15s, background .15s;
+            font-family: var(--font);
+        }
+        .shop-filter-btn:hover  { border-color: #111; color: #111; }
+        .shop-filter-btn.active { background: #111; border-color: #111; color: #fff; }
 
         /* Product grid */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px; align-items: start;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
         }
-        .shop-card { display: flex; flex-direction: column; gap: 7px; }
+        .shop-item { cursor: pointer; }
+        .shop-item[hidden] { display: none; }
 
-        .shop-card-img-wrap {
+        .shop-img-wrap {
             position: relative;
-            border-radius: var(--r);
+            aspect-ratio: 4/5;
+            background: #e8e8e5;
             overflow: hidden;
-            background: var(--g1);
+            border-radius: 4px;
         }
-        .shop-card-img-wrap img {
+        .shop-img-wrap img {
             width: 100%; height: 100%;
             object-fit: cover; display: block;
-            transition: transform .45s ease;
+            transition: transform .55s ease;
         }
-        .shop-card:hover .shop-card-img-wrap img { transform: scale(1.04); }
+        .shop-item:hover .shop-img-wrap img { transform: scale(1.05); }
 
-        /* Staggered heights */
-        .shop-card--short  .shop-card-img-wrap { aspect-ratio: 1 / 1; }
-        .shop-card--mid    .shop-card-img-wrap { aspect-ratio: 3 / 4; }
-        .shop-card--tall   .shop-card-img-wrap { aspect-ratio: 2 / 3; }
-
-        .shop-card-heart {
-            position: absolute; top: 10px; right: 10px;
-            width: 28px; height: 28px;
-            background: rgba(255,255,255,.88);
-            border-radius: 50%; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px; z-index: 2;
-            transition: transform .15s, background .15s;
-        }
-        .shop-card-heart:hover { transform: scale(1.18); background: #fff; }
-
-        .shop-card-info {
-            display: flex; justify-content: space-between;
-            align-items: baseline; gap: 4px; padding: 0 2px;
-        }
-        .shop-card-name {
-            font-size: 9px; font-weight: 600;
+        .shop-item-info { padding: 10px 2px 24px; }
+        .shop-item-name {
+            display: block; font-size: 9px; font-weight: 500;
             letter-spacing: 2px; text-transform: uppercase;
-            color: var(--black);
+            color: #111; margin-bottom: 5px;
         }
-        .shop-card-price {
-            font-size: 11px; font-weight: 400;
-            color: var(--muted); white-space: nowrap;
-        }
-
-        /* BUY NOW */
-        .shop-buy-row { display: flex; justify-content: flex-end; padding: 22px 0 0; }
-        .shop-buy-now {
-            font-size: clamp(20px, 3vw, 30px);
-            font-weight: 800; letter-spacing: -1px;
-            color: var(--black); text-decoration: none;
-            border-bottom: 2px solid var(--black);
-            padding-bottom: 2px;
-            transition: color .15s, border-color .15s;
-        }
-        .shop-buy-now:hover { color: var(--green); border-color: var(--green); }
-
-        /* Editorial images at bottom */
-        .shop-editorial {
-            display: grid;
-            grid-template-columns: 1fr 1.55fr;
-            gap: 12px; padding: 32px 0 52px;
-        }
-        .shop-edit-img {
-            border-radius: var(--r); overflow: hidden;
-            aspect-ratio: 3/4; background: var(--g1);
-        }
-        .shop-edit-img img {
-            width: 100%; height: 100%;
-            object-fit: cover; display: block;
-        }
+        .shop-item-price { font-size: 11px; color: #999; }
 
         /* Mobile */
         @media (max-width: 900px) {
-            .shop-hero { width: calc(100% + 16px); margin-left: -8px; height: 46vh; }
-            .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .shop-editorial { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 2px; }
+            .shop-hd { padding: 24px 0 18px; }
         }
         @media (max-width: 600px) {
-            .shop-hero { width: calc(100% + 12px); margin-left: -6px; height: 42vh; min-height: 280px; }
-            .shop-hero-brand { font-size: clamp(44px, 13vw, 80px); bottom: 48px; }
-            .shop-hero-subnav { font-size: 10px; padding: 5px 12px 5px 5px; }
+            .shop-filter-btn { height: 28px; padding: 0 11px; font-size: 8px; }
         }
 
         /* ── CONTACT ──────────────────────────────────────────────── */
@@ -1081,12 +1011,7 @@
         .cs-bar-wrap    { background: #1a1a1a; }
         .cs-hint        { color: #333; }
 
-        .shop-section-title { color: #d0d0d0; }
-        .shop-card-name     { color: #d0d0d0; }
-        .shop-card-img-wrap { background: #1a1a1a; }
-        .shop-edit-img      { background: #1a1a1a; }
-        .shop-buy-now       { color: #d0d0d0; border-bottom-color: #d0d0d0; }
-        .shop-buy-now:hover { color: var(--green); border-color: var(--green); }
+        /* shop is always light — no dark overrides needed */
 
         .contact-wrap h2 { color: #d0d0d0; }
         .form-field input, .form-field textarea { color: #d0d0d0; border-bottom-color: #2a2a2a; }
@@ -1374,86 +1299,104 @@
     <div id="shop-page" class="page">
         <div class="shop-wrap">
 
-            <!-- HERO -->
-            <div class="shop-hero">
-                <img class="shop-hero-bg" src="images/hero.png" alt="Ravi Sauce">
-                <div class="shop-hero-brand">RAVI<br>SAUCE</div>
-                <div class="shop-hero-subnav">
-                    <span class="shop-hero-pill">RAVI SAUCE</span>
-                    Shop &nbsp;|&nbsp; New Collection &nbsp;|&nbsp; About
-                </div>
+            <!-- HEADER -->
+            <div class="shop-hd">
+                <span class="shop-hd-title">Shop</span>
+                <span class="shop-hd-count" id="shop-count">16 items</span>
             </div>
 
-            <!-- BESTSELLERS -->
-            <div class="shop-section">
-                <h2 class="shop-section-title">Bestseller Now</h2>
-
-                <div class="shop-grid">
-
-                    <!-- JACKET — short -->
-                    <div class="shop-card shop-card--short">
-                        <div class="shop-card-img-wrap">
-                            <img src="images/RaviPuffer.png" alt="Puffer Jacket" loading="lazy">
-                            <button class="shop-card-heart" aria-label="Save">♡</button>
-                        </div>
-                        <div class="shop-card-info">
-                            <span class="shop-card-name">JACKET</span>
-                            <span class="shop-card-price">$299</span>
-                        </div>
-                    </div>
-
-                    <!-- HOODIE — tall, centerpiece -->
-                    <div class="shop-card shop-card--tall">
-                        <div class="shop-card-img-wrap">
-                            <img src="images/floatingravigrey.png" alt="Hoodie" loading="lazy">
-                            <button class="shop-card-heart" aria-label="Save">♡</button>
-                        </div>
-                        <div class="shop-card-info">
-                            <span class="shop-card-name">HOODIE</span>
-                            <span class="shop-card-price">$249</span>
-                        </div>
-                    </div>
-
-                    <!-- TIMEPIECE — mid -->
-                    <div class="shop-card shop-card--mid">
-                        <div class="shop-card-img-wrap">
-                            <img src="images/Watch_AI.png" alt="Timepiece" loading="lazy">
-                            <button class="shop-card-heart" aria-label="Save">♡</button>
-                        </div>
-                        <div class="shop-card-info">
-                            <span class="shop-card-name">TIMEPIECE</span>
-                            <span class="shop-card-price">$599</span>
-                        </div>
-                    </div>
-
-                    <!-- WALLET — short -->
-                    <div class="shop-card shop-card--short">
-                        <div class="shop-card-img-wrap">
-                            <img src="images/Wallet_Closed.png" alt="Wallet" loading="lazy">
-                            <button class="shop-card-heart" aria-label="Save">♡</button>
-                        </div>
-                        <div class="shop-card-info">
-                            <span class="shop-card-name">WALLET</span>
-                            <span class="shop-card-price">$149</span>
-                        </div>
-                    </div>
-
-                </div><!-- /shop-grid -->
-
-                <div class="shop-buy-row">
-                    <a href="#" class="shop-buy-now">BUY NOW→</a>
-                </div>
-            </div><!-- /shop-section -->
-
-            <!-- EDITORIAL -->
-            <div class="shop-editorial">
-                <div class="shop-edit-img">
-                    <img src="images/woodravi.png" alt="Ravi Sauce" loading="lazy">
-                </div>
-                <div class="shop-edit-img">
-                    <img src="images/RaviOntheMoon.png" alt="Ravi Sauce" loading="lazy">
-                </div>
+            <!-- FILTER -->
+            <div class="shop-filter">
+                <button class="shop-filter-btn active" onclick="filterShop('all')">All</button>
+                <button class="shop-filter-btn" onclick="filterShop('tee')">Tees</button>
+                <button class="shop-filter-btn" onclick="filterShop('acc')">Accessories</button>
+                <button class="shop-filter-btn" onclick="filterShop('obj')">Objects</button>
             </div>
+
+            <!-- GRID -->
+            <div class="shop-grid" id="shop-grid">
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-chill-white.png" alt="Chill Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Chill Ravi</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-chill-orange.png" alt="Chill Ravi Orange" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Chill Ravi — Orange</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-green.png" alt="Green Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Green Ravi</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-strong.png" alt="Strong Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Strong Ravi</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-color.png" alt="Ravi in Color" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Ravi in Color</span><span class="shop-item-price">$90</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-snake.png" alt="Snake Tee" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Snake Tee</span><span class="shop-item-price">$90</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-ski.png" alt="Ski Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Ski Ravi</span><span class="shop-item-price">$90</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-fishing.png" alt="Fishing Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Fishing Ravi</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-clowns.png" alt="Ravi Clowns" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Ravi Clowns</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="tee">
+                    <div class="shop-img-wrap"><img src="store/tee-mom.png" alt="Mom" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Mom</span><span class="shop-item-price">$85</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="acc">
+                    <div class="shop-img-wrap"><img src="store/acc-belt.png" alt="Belt" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Belt</span><span class="shop-item-price">$145</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="acc">
+                    <div class="shop-img-wrap"><img src="store/acc-chain.png" alt="Chain" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Chain</span><span class="shop-item-price">$199</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="acc">
+                    <div class="shop-img-wrap"><img src="store/acc-watch.png" alt="Timepiece" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Timepiece</span><span class="shop-item-price">$599</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="obj">
+                    <div class="shop-img-wrap"><img src="store/obj-buddha.png" alt="Buddha Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Buddha Ravi</span><span class="shop-item-price">$350</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="obj">
+                    <div class="shop-img-wrap"><img src="store/obj-wood.png" alt="Wood Ravi" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Wood Ravi</span><span class="shop-item-price">$280</span></div>
+                </div>
+
+                <div class="shop-item" data-cat="obj">
+                    <div class="shop-img-wrap"><img src="store/obj-horse.png" alt="Blue Horse" loading="lazy"></div>
+                    <div class="shop-item-info"><span class="shop-item-name">Blue Horse</span><span class="shop-item-price">$320</span></div>
+                </div>
+
+            </div><!-- /shop-grid -->
 
         </div><!-- /shop-wrap -->
     </div>
@@ -1824,6 +1767,22 @@ function refreshArrows() {
         _idx === 0                 ? '0.25' : '1';
     document.querySelector('.lb-arrow.next').style.opacity =
         _idx === _list.length - 1  ? '0.25' : '1';
+}
+
+// ── Shop filter ───────────────────────────────────────────────────
+function filterShop(cat) {
+    document.querySelectorAll('.shop-filter-btn').forEach(b =>
+        b.classList.toggle('active', b.textContent.toLowerCase().replace(/\s/g,'') === cat ||
+            (cat === 'all' && b.textContent.trim() === 'All'))
+    );
+    const items = document.querySelectorAll('.shop-item');
+    let count = 0;
+    items.forEach(item => {
+        const show = cat === 'all' || item.dataset.cat === cat;
+        item.hidden = !show;
+        if (show) count++;
+    });
+    document.getElementById('shop-count').textContent = count + ' item' + (count !== 1 ? 's' : '');
 }
 
 // ── Contact ───────────────────────────────────────────────────────
