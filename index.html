@@ -458,57 +458,93 @@
 
         /* ── SHOP ─────────────────────────────────────────────────── */
         /* ── SHOP ─────────────────────────────────────────────────── */
+        /* ── SHOP — LABORATORY THEME ──────────────────────────────── */
+        @keyframes blink-cur  { 0%,49%{opacity:1}50%,100%{opacity:0} }
+        @keyframes scan-sweep { 0%{top:-35%} 100%{top:110%} }
+        @keyframes status-scroll {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         .shop-wrap {
             min-height: calc(100vh - var(--nav-h));
-            background: #0a0a0a;
+            background: #060b07;
             color: #d0d0d0;
             padding: 0 18px 80px;
-            /* dot grid matches hero */
-            background-image: radial-gradient(circle, rgba(255,255,255,.03) 1px, transparent 1px);
-            background-size: 28px 28px;
-            background-attachment: local;
+            background-image:
+                linear-gradient(rgba(45,213,18,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45,213,18,.025) 1px, transparent 1px);
+            background-size: 32px 32px;
         }
 
         /* Header */
         .shop-hd {
             display: flex; align-items: baseline;
             justify-content: space-between; gap: 16px;
-            padding: 36px 0 6px;
-            border-bottom: 1px solid rgba(255,255,255,.06);
-            margin-bottom: 24px;
+            padding: 36px 0 12px;
+            border-bottom: 1px solid rgba(45,213,18,.12);
+            margin-bottom: 0;
         }
-        .shop-hd-left { display: flex; flex-direction: column; gap: 3px; }
+        .shop-hd-left { display: flex; flex-direction: column; gap: 4px; }
         .shop-hd-label {
             font-family: 'Courier New', monospace;
             font-size: 8px; letter-spacing: 3px;
             color: var(--green); text-transform: uppercase;
         }
+        .shop-hd-label::after {
+            content: '_';
+            animation: blink-cur 1.1s step-end infinite;
+        }
         .shop-hd-title {
-            font-size: 22px; font-weight: 700;
-            letter-spacing: -0.5px; color: #e8e8e8;
+            font-family: 'Courier New', monospace;
+            font-size: 20px; font-weight: 700;
+            letter-spacing: 2px; color: #d8f0d8;
+            text-transform: uppercase;
         }
         .shop-hd-count {
             font-family: 'Courier New', monospace;
-            font-size: 9px; color: rgba(255,255,255,.25);
+            font-size: 9px; color: rgba(45,213,18,.4);
             letter-spacing: 2px; align-self: flex-end;
+        }
+
+        /* Status ticker */
+        .shop-status {
+            overflow: hidden;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(45,213,18,.06);
+            margin-bottom: 22px;
+        }
+        .shop-status-inner {
+            display: inline-block;
+            white-space: nowrap;
+            animation: status-scroll 28s linear infinite;
+            font-family: 'Courier New', monospace;
+            font-size: 7px; letter-spacing: 2px;
+            color: rgba(45,213,18,.3);
+            text-transform: uppercase;
+        }
+        .shop-status-inner em {
+            color: rgba(45,213,18,.6);
+            font-style: normal;
         }
 
         /* Category filter */
         .shop-filter { display: flex; gap: 6px; padding-bottom: 28px; flex-wrap: wrap; }
         .shop-filter-btn {
             height: 28px; padding: 0 14px;
-            border: 1px solid rgba(255,255,255,.1); border-radius: 100px;
+            border: 1px solid rgba(45,213,18,.15); border-radius: 2px;
             background: transparent;
             font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-            color: rgba(255,255,255,.35); cursor: pointer;
-            transition: border-color .15s, color .15s, background .15s;
+            color: rgba(45,213,18,.35); cursor: pointer;
+            transition: border-color .15s, color .15s, background .15s, box-shadow .15s;
             font-family: 'Courier New', monospace;
         }
-        .shop-filter-btn:hover  { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.7); }
+        .shop-filter-btn:hover { border-color: rgba(45,213,18,.5); color: rgba(45,213,18,.7); }
         .shop-filter-btn.active {
-            background: rgba(45,213,18,.12);
+            background: rgba(45,213,18,.08);
             border-color: var(--green);
             color: var(--green);
+            box-shadow: 0 0 10px rgba(45,213,18,.2), inset 0 0 8px rgba(45,213,18,.04);
         }
 
         /* Product grid */
@@ -516,39 +552,81 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1px;
+            background: rgba(45,213,18,.06);
+            border: 1px solid rgba(45,213,18,.06);
         }
-        .shop-item { cursor: pointer; }
+        .shop-item { cursor: pointer; background: #060b07; }
         .shop-item[hidden] { display: none; }
 
         .shop-img-wrap {
             position: relative;
             aspect-ratio: 4/5;
-            background: #111;
+            background: #070d08;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,.05);
-            transition: border-color .3s;
+            border: 1px solid rgba(45,213,18,.06);
+            transition: border-color .3s, box-shadow .3s;
+        }
+
+        /* corner brackets */
+        .shop-img-wrap::before,
+        .shop-img-wrap::after {
+            content: '';
+            position: absolute;
+            width: 14px; height: 14px;
+            z-index: 4;
+            opacity: .3;
+            transition: opacity .3s;
+            pointer-events: none;
+        }
+        .shop-img-wrap::before {
+            top: 9px; left: 9px;
+            border-top: 1px solid var(--green);
+            border-left: 1px solid var(--green);
+        }
+        .shop-img-wrap::after {
+            bottom: 9px; right: 9px;
+            border-bottom: 1px solid var(--green);
+            border-right: 1px solid var(--green);
         }
         .shop-item:hover .shop-img-wrap {
-            border-color: rgba(45,213,18,.3);
-            box-shadow: 0 0 24px rgba(45,213,18,.07);
+            border-color: rgba(45,213,18,.4);
+            box-shadow: 0 0 28px rgba(45,213,18,.08);
         }
+        .shop-item:hover .shop-img-wrap::before,
+        .shop-item:hover .shop-img-wrap::after { opacity: 1; }
+
+        /* scan-line element (injected by JS) */
+        .shop-scan {
+            position: absolute;
+            left: 0; right: 0; top: -35%;
+            height: 35%;
+            background: linear-gradient(to bottom, transparent, rgba(45,213,18,.06), transparent);
+            z-index: 3;
+            pointer-events: none;
+        }
+        .shop-item:hover .shop-scan { animation: scan-sweep .85s ease-in-out forwards; }
+
         .shop-img-wrap img {
             width: 100%; height: 100%;
             object-fit: contain; display: block;
             transition: transform .55s ease;
-            padding: 12%;
+            padding: 10%;
+            filter: drop-shadow(0 6px 24px rgba(0,0,0,.7));
         }
-        .shop-item:hover .shop-img-wrap img { transform: scale(1.06); }
+        .shop-item:hover .shop-img-wrap img { transform: scale(1.05); }
 
-        /* Specimen number */
+        /* Specimen info */
         .shop-item-spec {
             font-family: 'Courier New', monospace;
             font-size: 7px; letter-spacing: 2px;
-            color: rgba(45,213,18,.4);
+            color: rgba(45,213,18,.55);
             padding: 10px 0 4px;
+            text-transform: uppercase;
         }
         .shop-item-name {
-            display: block; font-size: 10px; font-weight: 500;
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 10px; font-weight: 500;
             letter-spacing: 1.5px; text-transform: uppercase;
             color: rgba(255,255,255,.75); margin-bottom: 4px;
         }
@@ -556,14 +634,15 @@
             font-family: 'Courier New', monospace;
             font-size: 11px; color: var(--green);
             letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(45,213,18,.4);
         }
-        .shop-item-info { padding-bottom: 28px; }
+        .shop-item-info { padding: 0 0 28px; }
 
         /* Mobile */
         @media (max-width: 900px) {
             .shop-wrap { padding: 0 8px 60px; }
             .shop-grid { grid-template-columns: repeat(2, 1fr); }
-            .shop-hd { padding: 24px 0 6px; margin-bottom: 18px; }
+            .shop-hd { padding: 24px 0 10px; }
         }
         @media (max-width: 600px) {
             .shop-wrap { padding: 0 6px 60px; }
@@ -1343,6 +1422,13 @@
                 <span class="shop-hd-count" id="shop-count">16 specimens</span>
             </div>
 
+            <!-- STATUS TICKER -->
+            <div class="shop-status">
+                <div class="shop-status-inner">
+                    SYS_OK &nbsp;// &nbsp;SPECIMEN_DB <em>v2.4</em> &nbsp;// &nbsp;CONTAINMENT: <em>STABLE</em> &nbsp;// &nbsp;TEMP: <em>22.4°C</em> &nbsp;// &nbsp;UNITS ACTIVE: <em>23</em> &nbsp;// &nbsp;CATALOGUE: <em>RSL-2026</em> &nbsp;// &nbsp;STATUS: <em>OPERATIONAL</em> &nbsp;// &nbsp;LAST SYNC: <em>02:14:07</em> &nbsp;// &nbsp;INTEGRITY: <em>100%</em> &nbsp;//&nbsp;&nbsp;&nbsp;SYS_OK &nbsp;// &nbsp;SPECIMEN_DB <em>v2.4</em> &nbsp;// &nbsp;CONTAINMENT: <em>STABLE</em> &nbsp;// &nbsp;TEMP: <em>22.4°C</em> &nbsp;// &nbsp;UNITS ACTIVE: <em>23</em> &nbsp;// &nbsp;CATALOGUE: <em>RSL-2026</em> &nbsp;// &nbsp;STATUS: <em>OPERATIONAL</em> &nbsp;// &nbsp;LAST SYNC: <em>02:14:07</em> &nbsp;// &nbsp;INTEGRITY: <em>100%</em> &nbsp;//&nbsp;
+                </div>
+            </div>
+
             <!-- FILTER -->
             <div class="shop-filter">
                 <button class="shop-filter-btn active" onclick="filterShop('all')">All</button>
@@ -1804,6 +1890,13 @@ function refreshArrows() {
 }
 
 // ── Shop filter ───────────────────────────────────────────────────
+// Inject scan-line divs into all product image wraps
+document.querySelectorAll('.shop-img-wrap').forEach(w => {
+    const s = document.createElement('div');
+    s.className = 'shop-scan';
+    w.appendChild(s);
+});
+
 function filterShop(cat) {
     document.querySelectorAll('.shop-filter-btn').forEach(b =>
         b.classList.toggle('active', b.textContent.toLowerCase().replace(/\s/g,'') === cat ||
