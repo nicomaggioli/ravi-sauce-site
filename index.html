@@ -57,26 +57,35 @@
         .logo-wrap {
             position: absolute;
             left: 24px;
-            perspective: 500px;
+            perspective: 600px;
+            perspective-origin: center center;
         }
         .logo {
             width: 44px; height: 44px;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             border: none;
-            background: rgba(20,20,20,.85);
+            background: transparent;
             border-radius: 50%;
             transform-style: preserve-3d;
             animation: logoSpin3d 6s linear infinite;
-            box-shadow:
-                0 0 0 1.5px rgba(45,213,18,.45),
-                0 0 18px rgba(45,213,18,.18),
-                inset 0 0 12px rgba(0,0,0,.6);
         }
+        /* Front face — the logo image */
         .logo img {
-            width: 72%; height: 72%; object-fit: contain;
+            width: 100%; height: 100%; object-fit: contain;
             border-radius: 50%;
+            backface-visibility: visible;
         }
+        /* Back face — solid circle that shows when coin is flipped */
+        .logo::after {
+            content: '';
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #3a3a3a, #111);
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+        }
+        .logo img { backface-visibility: hidden; }
         @keyframes logoSpin3d {
             0%   { transform: rotateY(0deg); }
             100% { transform: rotateY(360deg); }
@@ -461,6 +470,155 @@
             100% { width: 50%; margin-left: 50%; }
         }
         .cs-hint { font-size: 11px; letter-spacing: 2px; color: var(--g3); text-transform: uppercase; }
+
+        /* ── SHOP ─────────────────────────────────────────────────── */
+        .shop-wrap { min-height: calc(100vh - var(--nav-h)); }
+
+        /* Hero */
+        .shop-hero {
+            position: relative;
+            width: calc(100% + 36px);
+            margin-left: -18px;
+            margin-top: calc(-1 * (var(--nav-h) + 4px));
+            height: 58vh; min-height: 380px;
+            overflow: hidden;
+            background: #000;
+            border-radius: 0;
+        }
+        .shop-hero-bg {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            opacity: .72;
+            filter: grayscale(20%);
+        }
+        .shop-hero-brand {
+            position: absolute;
+            bottom: 56px; left: 20px;
+            font-size: clamp(56px, 11vw, 120px);
+            font-weight: 900;
+            line-height: .88;
+            color: #fff;
+            letter-spacing: -4px;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+        .shop-hero-subnav {
+            position: absolute;
+            bottom: 18px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,.22);
+            border-radius: 100px;
+            padding: 6px 18px 6px 6px;
+            font-size: 11.5px; letter-spacing: .6px;
+            color: rgba(255,255,255,.85);
+            white-space: nowrap;
+        }
+        .shop-hero-pill {
+            background: #fff; color: #111;
+            border-radius: 100px; padding: 3px 14px;
+            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+        }
+
+        /* Section */
+        .shop-section { padding: 32px 0 0; }
+        .shop-section-title {
+            font-size: clamp(20px, 3.5vw, 32px);
+            font-weight: 800; letter-spacing: -1px;
+            margin-bottom: 18px; color: var(--black);
+        }
+
+        /* Product grid */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px; align-items: start;
+        }
+        .shop-card { display: flex; flex-direction: column; gap: 7px; }
+
+        .shop-card-img-wrap {
+            position: relative;
+            border-radius: var(--r);
+            overflow: hidden;
+            background: var(--g1);
+        }
+        .shop-card-img-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+            transition: transform .45s ease;
+        }
+        .shop-card:hover .shop-card-img-wrap img { transform: scale(1.04); }
+
+        /* Staggered heights */
+        .shop-card--short  .shop-card-img-wrap { aspect-ratio: 1 / 1; }
+        .shop-card--mid    .shop-card-img-wrap { aspect-ratio: 3 / 4; }
+        .shop-card--tall   .shop-card-img-wrap { aspect-ratio: 2 / 3; }
+
+        .shop-card-heart {
+            position: absolute; top: 10px; right: 10px;
+            width: 28px; height: 28px;
+            background: rgba(255,255,255,.88);
+            border-radius: 50%; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; z-index: 2;
+            transition: transform .15s, background .15s;
+        }
+        .shop-card-heart:hover { transform: scale(1.18); background: #fff; }
+
+        .shop-card-info {
+            display: flex; justify-content: space-between;
+            align-items: baseline; gap: 4px; padding: 0 2px;
+        }
+        .shop-card-name {
+            font-size: 9px; font-weight: 600;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--black);
+        }
+        .shop-card-price {
+            font-size: 11px; font-weight: 400;
+            color: var(--muted); white-space: nowrap;
+        }
+
+        /* BUY NOW */
+        .shop-buy-row { display: flex; justify-content: flex-end; padding: 22px 0 0; }
+        .shop-buy-now {
+            font-size: clamp(20px, 3vw, 30px);
+            font-weight: 800; letter-spacing: -1px;
+            color: var(--black); text-decoration: none;
+            border-bottom: 2px solid var(--black);
+            padding-bottom: 2px;
+            transition: color .15s, border-color .15s;
+        }
+        .shop-buy-now:hover { color: var(--green); border-color: var(--green); }
+
+        /* Editorial images at bottom */
+        .shop-editorial {
+            display: grid;
+            grid-template-columns: 1fr 1.55fr;
+            gap: 12px; padding: 32px 0 52px;
+        }
+        .shop-edit-img {
+            border-radius: var(--r); overflow: hidden;
+            aspect-ratio: 3/4; background: var(--g1);
+        }
+        .shop-edit-img img {
+            width: 100%; height: 100%;
+            object-fit: cover; display: block;
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .shop-hero { width: calc(100% + 16px); margin-left: -8px; height: 46vh; }
+            .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .shop-editorial { grid-template-columns: 1fr 1fr; gap: 10px; }
+        }
+        @media (max-width: 600px) {
+            .shop-hero { width: calc(100% + 12px); margin-left: -6px; height: 42vh; min-height: 280px; }
+            .shop-hero-brand { font-size: clamp(44px, 13vw, 80px); bottom: 48px; }
+            .shop-hero-subnav { font-size: 10px; padding: 5px 12px 5px 5px; }
+        }
 
         /* ── CONTACT ──────────────────────────────────────────────── */
         .contact-wrap {
@@ -854,6 +1012,48 @@
             .hud-panel.dragging { cursor: grabbing; box-shadow: 0 0 0 2px rgba(255,255,255,.2), 0 32px 80px rgba(0,0,0,.9); transition: none; }
         }
 
+        /* ── RESIZE HANDLES ── */
+        .resize-handle {
+            position: absolute; width: 18px; height: 18px;
+            z-index: 9; background: transparent;
+        }
+        .resize-handle::after {
+            content: '';
+            position: absolute;
+            width: 7px; height: 7px;
+        }
+        .resize-handle[data-dir="se"] { bottom: 0; right: 0; cursor: se-resize; }
+        .resize-handle[data-dir="se"]::after {
+            bottom: 4px; right: 4px;
+            border-right: 2px solid rgba(255,255,255,.7);
+            border-bottom: 2px solid rgba(255,255,255,.7);
+            border-radius: 0 0 2px 0;
+        }
+        .resize-handle[data-dir="sw"] { bottom: 0; left: 0; cursor: sw-resize; }
+        .resize-handle[data-dir="sw"]::after {
+            bottom: 4px; left: 4px;
+            border-left: 2px solid rgba(255,255,255,.7);
+            border-bottom: 2px solid rgba(255,255,255,.7);
+            border-radius: 0 0 0 2px;
+        }
+        .resize-handle[data-dir="ne"] { top: 0; right: 0; cursor: ne-resize; }
+        .resize-handle[data-dir="ne"]::after {
+            top: 4px; right: 4px;
+            border-right: 2px solid rgba(255,255,255,.7);
+            border-top: 2px solid rgba(255,255,255,.7);
+            border-radius: 0 2px 0 0;
+        }
+        .resize-handle[data-dir="nw"] { top: 0; left: 0; cursor: nw-resize; }
+        .resize-handle[data-dir="nw"]::after {
+            top: 4px; left: 4px;
+            border-left: 2px solid rgba(255,255,255,.7);
+            border-top: 2px solid rgba(255,255,255,.7);
+            border-radius: 2px 0 0 0;
+        }
+        /* Only show handles when hovering the panel */
+        .hud-panel .resize-handle { opacity: 0; transition: opacity .2s; }
+        .hud-panel:hover .resize-handle { opacity: 1; }
+
         /* ── MOBILE ── */
         @media (max-width: 900px) {
             /* pa + pb + main are positioned by JS; hide the rest */
@@ -902,6 +1102,13 @@
         .coming-soon p  { color: #555; }
         .cs-bar-wrap    { background: #1a1a1a; }
         .cs-hint        { color: #333; }
+
+        .shop-section-title { color: #d0d0d0; }
+        .shop-card-name     { color: #d0d0d0; }
+        .shop-card-img-wrap { background: #1a1a1a; }
+        .shop-edit-img      { background: #1a1a1a; }
+        .shop-buy-now       { color: #d0d0d0; border-bottom-color: #d0d0d0; }
+        .shop-buy-now:hover { color: var(--green); border-color: var(--green); }
 
         .contact-wrap h2 { color: #d0d0d0; }
         .form-field input, .form-field textarea { color: #d0d0d0; border-bottom-color: #2a2a2a; }
@@ -1185,15 +1392,92 @@
         </div>
     </div>
 
-    <!-- SHOP — COMING SOON -->
+    <!-- SHOP -->
     <div id="shop-page" class="page">
-        <div class="coming-soon">
-            <span class="cs-tag">RS — Store</span>
-            <h1>Coming<br>Soon</h1>
-            <p>The shop is being built. Prints, limited drops, and more. Check back soon.</p>
-            <div class="cs-bar-wrap"><div class="cs-bar-fill"></div></div>
-            <span class="cs-hint">Under Construction</span>
-        </div>
+        <div class="shop-wrap">
+
+            <!-- HERO -->
+            <div class="shop-hero">
+                <img class="shop-hero-bg" src="images/hero.png" alt="Ravi Sauce">
+                <div class="shop-hero-brand">RAVI<br>SAUCE</div>
+                <div class="shop-hero-subnav">
+                    <span class="shop-hero-pill">RAVI SAUCE</span>
+                    Shop &nbsp;|&nbsp; New Collection &nbsp;|&nbsp; About
+                </div>
+            </div>
+
+            <!-- BESTSELLERS -->
+            <div class="shop-section">
+                <h2 class="shop-section-title">Bestseller Now</h2>
+
+                <div class="shop-grid">
+
+                    <!-- JACKET — short -->
+                    <div class="shop-card shop-card--short">
+                        <div class="shop-card-img-wrap">
+                            <img src="images/RaviPuffer.png" alt="Puffer Jacket" loading="lazy">
+                            <button class="shop-card-heart" aria-label="Save">♡</button>
+                        </div>
+                        <div class="shop-card-info">
+                            <span class="shop-card-name">JACKET</span>
+                            <span class="shop-card-price">$299</span>
+                        </div>
+                    </div>
+
+                    <!-- HOODIE — tall, centerpiece -->
+                    <div class="shop-card shop-card--tall">
+                        <div class="shop-card-img-wrap">
+                            <img src="images/floatingravigrey.png" alt="Hoodie" loading="lazy">
+                            <button class="shop-card-heart" aria-label="Save">♡</button>
+                        </div>
+                        <div class="shop-card-info">
+                            <span class="shop-card-name">HOODIE</span>
+                            <span class="shop-card-price">$249</span>
+                        </div>
+                    </div>
+
+                    <!-- TIMEPIECE — mid -->
+                    <div class="shop-card shop-card--mid">
+                        <div class="shop-card-img-wrap">
+                            <img src="images/Watch_AI.png" alt="Timepiece" loading="lazy">
+                            <button class="shop-card-heart" aria-label="Save">♡</button>
+                        </div>
+                        <div class="shop-card-info">
+                            <span class="shop-card-name">TIMEPIECE</span>
+                            <span class="shop-card-price">$599</span>
+                        </div>
+                    </div>
+
+                    <!-- WALLET — short -->
+                    <div class="shop-card shop-card--short">
+                        <div class="shop-card-img-wrap">
+                            <img src="images/Wallet_Closed.png" alt="Wallet" loading="lazy">
+                            <button class="shop-card-heart" aria-label="Save">♡</button>
+                        </div>
+                        <div class="shop-card-info">
+                            <span class="shop-card-name">WALLET</span>
+                            <span class="shop-card-price">$149</span>
+                        </div>
+                    </div>
+
+                </div><!-- /shop-grid -->
+
+                <div class="shop-buy-row">
+                    <a href="#" class="shop-buy-now">BUY NOW→</a>
+                </div>
+            </div><!-- /shop-section -->
+
+            <!-- EDITORIAL -->
+            <div class="shop-editorial">
+                <div class="shop-edit-img">
+                    <img src="images/woodravi.png" alt="Ravi Sauce" loading="lazy">
+                </div>
+                <div class="shop-edit-img">
+                    <img src="images/RaviOntheMoon.png" alt="Ravi Sauce" loading="lazy">
+                </div>
+            </div>
+
+        </div><!-- /shop-wrap -->
     </div>
 
     <!-- CONTACT -->
@@ -1856,8 +2140,9 @@ document.addEventListener('keydown', e => {
         });
     }
 
+    let highZ = 10;
+
     function initDrag() {
-        let highZ = 10;
         panels.forEach(panel => {
             if (isMob) {
                 // ── Touch drag ──
@@ -1915,7 +2200,67 @@ document.addEventListener('keydown', e => {
         });
     }
 
-    requestAnimationFrame(() => { place(); initDrag(); });
+    function initResize() {
+        if (isMob) return;
+        const DIRS = ['nw', 'ne', 'sw', 'se'];
+        const MIN_W = 80, MIN_H = 60;
+
+        panels.forEach(panel => {
+            DIRS.forEach(dir => {
+                const handle = document.createElement('div');
+                handle.className = 'resize-handle';
+                handle.dataset.dir = dir;
+                panel.appendChild(handle);
+
+                handle.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    e.stopPropagation(); // don't trigger drag
+                    panel.style.zIndex = ++highZ;
+
+                    const startX = e.clientX, startY = e.clientY;
+                    const startL = parseInt(panel.style.left) || 0;
+                    const startT = parseInt(panel.style.top)  || 0;
+                    const startW = panel.offsetWidth;
+                    const startH = panel.offsetHeight;
+
+                    function onMove(e) {
+                        const dx = e.clientX - startX;
+                        const dy = e.clientY - startY;
+                        const W  = hero.offsetWidth;
+                        const H  = hero.offsetHeight;
+                        let l = startL, t = startT, w = startW, h = startH;
+
+                        if (dir === 'se' || dir === 'ne') w = Math.max(MIN_W, startW + dx);
+                        if (dir === 'sw' || dir === 'nw') {
+                            const nw = Math.max(MIN_W, startW - dx);
+                            l = startL + (startW - nw);
+                            w = nw;
+                        }
+                        if (dir === 'sw' || dir === 'se') h = Math.max(MIN_H, startH + dy);
+                        if (dir === 'nw' || dir === 'ne') {
+                            const nh = Math.max(MIN_H, startH - dy);
+                            t = startT + (startH - nh);
+                            h = nh;
+                        }
+                        l = Math.max(PAD, Math.min(l, W - MIN_W - PAD));
+                        t = Math.max(PAD, Math.min(t, H - BAR_H - MIN_H - PAD));
+                        panel.style.left   = l + 'px';
+                        panel.style.top    = t + 'px';
+                        panel.style.width  = w + 'px';
+                        panel.style.height = h + 'px';
+                    }
+                    function onUp() {
+                        document.removeEventListener('mousemove', onMove);
+                        document.removeEventListener('mouseup', onUp);
+                    }
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup', onUp);
+                });
+            });
+        });
+    }
+
+    requestAnimationFrame(() => { place(); initDrag(); initResize(); });
 })();
 
 // ── Init ──────────────────────────────────────────────────────────
