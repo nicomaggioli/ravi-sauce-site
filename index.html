@@ -192,14 +192,10 @@
         /* ── MAIN ─────────────────────────────────────────────────── */
         .main {
             padding-top: calc(var(--nav-h) + 4px);
-            padding-left: 3%;
-            padding-right: 3%;
+            padding-left: 18px;
+            padding-right: 18px;
             padding-bottom: 40px;
             min-height: 100vh;
-        }
-
-        @media (max-width: 768px) {
-            .main { padding-left: 3%; padding-right: 3%; padding-top: calc(var(--nav-h) + 4px); }
         }
 
         .page { display: none; opacity: 0; transform: translateY(16px); }
@@ -212,10 +208,10 @@
         @keyframes pageIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
         /* ── MASONRY ──────────────────────────────────────────────── */
-        .masonry-grid { column-count: 4; column-gap: 4px; padding-top: 8px; }
+        .masonry-grid { column-count: 4; column-gap: 8px; padding-top: 8px; }
 
-        @media (max-width: 900px)  { .masonry-grid { column-count: 3; } }
-        @media (max-width: 600px)  { .masonry-grid { column-count: 2; } }
+        @media (max-width: 900px)  { .masonry-grid { column-count: 3; column-gap: 6px; } }
+        @media (max-width: 600px)  { .masonry-grid { column-count: 2; column-gap: 5px; } }
 
         /* ── PIN ──────────────────────────────────────────────────── */
         @keyframes shimmer {
@@ -224,7 +220,7 @@
         }
         .pin {
             break-inside: avoid;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             border-radius: var(--r);
             overflow: hidden;
             position: relative;
@@ -247,6 +243,12 @@
         }
         .pin img.visible { opacity: 1; transform: translateY(0); }
         @media (max-width: 600px) { .pin img { border-radius: 8px; } }
+
+        /* ── PIN SIZE VARIANTS (randomly assigned each load) ── */
+        .sz-s  img { aspect-ratio: 4/3;  object-fit: cover; }
+        .sz-m  img { aspect-ratio: 2/3;  object-fit: cover; }
+        .sz-l  img { aspect-ratio: 1/1.6; object-fit: cover; }
+        .sz-xl img { aspect-ratio: 9/16; object-fit: cover; }
 
         /* Hide save overlay on touch devices */
         @media (pointer: coarse) { .pin-overlay { display: none; } }
@@ -635,8 +637,8 @@
             height: 100vh;
             height: 100svh;
             margin-top: calc(-1 * (var(--nav-h) + 4px));
-            margin-left: -3%;
-            margin-right: -3%;
+            margin-left: -18px;
+            margin-right: -18px;
             overflow: hidden;
             background: #060606;
             background-image: radial-gradient(circle, rgba(255,255,255,.032) 1px, transparent 1px);
@@ -713,14 +715,7 @@
             position: absolute; inset: 0;
             pointer-events: none; z-index: 7;
         }
-        .p-corner {
-            position: absolute;
-            width: 12px; height: 12px;
-            border-color: rgba(255,255,255,.2);
-            border-style: solid;
-        }
-        .pc-tl { top: 7px;  left: 7px;  border-width: 1px 0 0 1px; }
-        .pc-tr { top: 7px;  right: 7px; border-width: 1px 1px 0 0; }
+        .p-corner { display: none; }
         .hud-spec {
             position: absolute;
             top: 10px; left: 18px;
@@ -747,15 +742,7 @@
         .pl-time { margin-left: auto; font-size: 7px; letter-spacing: 1px; color: rgba(255,255,255,.22); }
 
         /* ── SCREEN CORNER COORDS ── */
-        .hud-corner {
-            position: absolute;
-            display: flex; align-items: center; gap: 7px;
-            font-size: 8px; letter-spacing: 1.5px;
-            color: rgba(255,255,255,.25);
-            pointer-events: none; z-index: 20; white-space: nowrap;
-        }
-        .hud-corner-tl { top: 2.5vh; left: 3%; }
-        .hud-corner-tr { top: 2.5vh; right: 3%; }
+        .hud-corner    { display: none; }
         .hud-circle {
             width: 12px; height: 12px;
             border: 1px solid rgba(255,255,255,.22); border-radius: 50%; flex-shrink: 0;
@@ -772,13 +759,8 @@
         .hud-xbox::before { transform: translate(-50%,-50%) rotate(45deg); }
         .hud-xbox::after  { transform: translate(-50%,-50%) rotate(-45deg); }
 
-        /* ── METADATA TEXT (above main panel) ── */
-        .hud-meta {
-            position: absolute; top: 1.5vh; left: 30%; right: 20%;
-            font-size: 7px; letter-spacing: 1px; line-height: 1.9;
-            color: rgba(255,255,255,.16);
-            pointer-events: none; z-index: 15;
-        }
+        /* ── METADATA TEXT ── */
+        .hud-meta { display: none; }
 
         /* ── SIDEBAR ── */
         .hud-sidebar {
@@ -809,6 +791,7 @@
             border-top: 1px solid rgba(255,255,255,.07);
             font-size: 8.5px; letter-spacing: 2px; overflow: hidden;
             background: rgba(4,4,4,.9); backdrop-filter: blur(12px);
+            z-index: 10;
         }
         .hud-bar-seg {
             height: 100%; display: flex; align-items: center;
@@ -826,11 +809,11 @@
         /* ── MOBILE ── */
         @media (max-width: 900px) {
             .hud-pa, .hud-pb, .hud-pc, .hud-pd,
-            .hud-sidebar, .hud-corner-tr, .hud-meta,
-            .hud-x-bl, .hud-x-br            { display: none; }
-            .hud-main { left: 0; top: 0; right: 0; bottom: 7vh;
-                        border-radius: 0; border: none; box-shadow: none; }
-            .hud-corner-tl { top: calc(var(--nav-h) + 8px); }
+            .hud-sidebar, .hud-x-bl, .hud-x-br { display: none; }
+            .hud-main {
+                left: 0; top: 0; right: 0; bottom: 0;
+                border-radius: 0; border: none; box-shadow: none;
+            }
         }
         @media (max-width: 600px) {
             .hud-bar-tags, .hud-bar-count { display: none; }
@@ -1302,13 +1285,20 @@ function shuffle(arr) {
     return a;
 }
 
+// Random size tier for varied pin heights
+const SIZE_TIERS = ['', '', 'sz-s', 'sz-m', 'sz-l', 'sz-xl'];
+function randomSize() {
+    return SIZE_TIERS[Math.floor(Math.random() * SIZE_TIERS.length)];
+}
+
 let shuffled = shuffle(images);
 let saved    = JSON.parse(localStorage.getItem('savedPins') || '[]');
 
 // ── Create a pin card ─────────────────────────────────────────────
 function makePin(src, showSave) {
     const div = document.createElement('div');
-    div.className = 'pin';
+    const sz  = randomSize();
+    div.className = sz ? `pin ${sz}` : 'pin';
     const isSaved = saved.includes(src);
     const safe    = src.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
@@ -1693,27 +1683,15 @@ document.addEventListener('keydown', e => {
     setInterval(tick, 1000);
 })();
 
-// ── Panel videos: different start times so they look like 5 unique feeds ─
+// ── Panel videos: random start times so they look like 5 unique feeds ─
 (function () {
-    const timeMap = {
-        'hud-vid-pa': 7,   // +7s
-        'hud-vid-pb': 14,  // +14s
-        'hud-vid-pc': 21,  // +21s
-        'hud-vid-pd': 28,  // +28s
-        // hud-vid-main stays at 0s (controlled by loader)
-    };
     document.querySelectorAll('.hud-vid').forEach(v => {
-        // Find offset for this panel
-        let offset = 0;
-        for (const [cls, t] of Object.entries(timeMap)) {
-            if (v.classList.contains(cls)) { offset = t; break; }
-        }
-        if (offset > 0) {
-            v.addEventListener('loadedmetadata', () => {
-                if (v.duration && v.duration > offset) v.currentTime = offset;
-            }, { once: true });
-        }
-        // Fade in when playing
+        const isMain = v.classList.contains('hud-vid-main');
+        v.addEventListener('loadedmetadata', () => {
+            if (!isMain && v.duration > 2) {
+                v.currentTime = Math.random() * v.duration;
+            }
+        }, { once: true });
         v.addEventListener('playing', () => v.classList.add('playing'), { once: true });
     });
 })();
