@@ -745,13 +745,28 @@
 
         /* ── SIDEBAR ── */
         .hud-sidebar {
-            position: absolute; left: 2%;
-            top: calc(9vh + 42vh + 2.5vh);
+            position: absolute; left: 2%; bottom: 12vh;
             font-size: 7.5px; letter-spacing: 1.5px; line-height: 2.1;
             color: rgba(255,255,255,.2);
             pointer-events: none; z-index: 15;
         }
         .hud-sidebar-sep { opacity: .2; }
+
+        /* ── AMBIENT LAB TEXT ── */
+        .hud-ambient {
+            position: absolute;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 7px; letter-spacing: 1.5px; line-height: 2;
+            color: rgba(255,255,255,.15);
+            pointer-events: none; z-index: 15;
+            text-transform: uppercase;
+        }
+        .hud-amb-g   { color: rgba(45,213,18,.28); }
+        .hud-amb-sep { opacity: .25; }
+        .hud-amb-top { top: 3vh;    left: 50%; transform: translateX(-50%); white-space: nowrap; letter-spacing: 2.5px; }
+        .hud-amb-right { top: 10vh; right: 2%; text-align: right; }
+        .hud-amb-bl  { bottom: 13vh; left: 2%; }
+        .hud-amb-br  { bottom: 13vh; right: 2%; text-align: right; }
 
         /* ── CORNER X DECO ── */
         .hud-x-deco {
@@ -796,7 +811,8 @@
         /* ── MOBILE ── */
         @media (max-width: 900px) {
             .hud-pa, .hud-pb, .hud-pc, .hud-pd,
-            .hud-sidebar, .hud-x-bl, .hud-x-br { display: none; }
+            .hud-sidebar, .hud-x-bl, .hud-x-br,
+            .hud-ambient { display: none; }
             .hud-main {
                 left: 0; top: 0; right: 0; bottom: 0;
                 border-radius: 0; border: none; box-shadow: none;
@@ -939,7 +955,7 @@
             <!-- ── PANEL PA — R ── -->
             <div class="hud-panel hud-pa">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pa">
-                    <source src="videos/animation-reel.mp4" type="video/mp4">
+                    <source src="videos/animation-reel.mp4?feed=a" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -952,7 +968,7 @@
 
             <div class="hud-panel hud-pb">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pb">
-                    <source src="videos/animation-reel.mp4" type="video/mp4">
+                    <source src="videos/animation-reel.mp4?feed=b" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -965,7 +981,7 @@
 
             <div class="hud-panel hud-pc">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pc">
-                    <source src="videos/animation-reel.mp4" type="video/mp4">
+                    <source src="videos/animation-reel.mp4?feed=c" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -978,7 +994,7 @@
 
             <div class="hud-panel hud-pd">
                 <video autoplay muted loop playsinline class="hud-vid hud-vid-pd">
-                    <source src="videos/animation-reel.mp4" type="video/mp4">
+                    <source src="videos/animation-reel.mp4?feed=d" type="video/mp4">
                 </video>
                 <div class="scan-line"></div>
                 <div class="panel-ui">
@@ -1000,6 +1016,63 @@
                         <span class="pl-id">CAM—MAIN / PRIMARY FEED</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- AMBIENT LAB TEXT -->
+
+            <!-- Top center — identity strip -->
+            <div class="hud-ambient hud-amb-top">
+                RAVISAUCE LABS &nbsp;///&nbsp; CURIOSITY : [INFINITE] &nbsp;///&nbsp; NATURE + SCIENCE + ART
+            </div>
+
+            <!-- Right column — constants + fibonacci + nature -->
+            <div class="hud-ambient hud-amb-right">
+                <span class="hud-amb-sep">— MATHEMATICAL CONSTANTS —</span><br>
+                φ &nbsp;: 1.6180339887 &nbsp;[GOLDEN RATIO]<br>
+                π &nbsp;: 3.14159265358 [CIRCLE RATIO]<br>
+                e &nbsp;: 2.71828182845 [EULER NUMBER]<br>
+                <br>
+                <span class="hud-amb-sep">— FIBONACCI SEQUENCE —</span><br>
+                <span class="hud-amb-g">0, 1, 1, 2, 3, 5, 8, 13, 21,</span><br>
+                <span class="hud-amb-g">34, 55, 89, 144, 233 → ∞</span><br>
+                <br>
+                <span class="hud-amb-sep">— FOUND IN NATURE —</span><br>
+                / NAUTILUS SHELL SPIRALS<br>
+                / SUNFLOWER SEED HEADS<br>
+                / GALAXY ARM STRUCTURE<br>
+                / TREE BRANCH ANGLES<br>
+                / DNA HELIX COILS<br>
+                / HUMAN PROPORTIONS<br>
+                <br>
+                <span class="hud-amb-sep">— — — — — — — — — — —</span><br>
+                ENTROPY &nbsp;: DECREASING<br>
+                SIGNAL &nbsp;&nbsp;: [ORGANIC]<br>
+                STATUS &nbsp;&nbsp;: OBSERVING
+            </div>
+
+            <!-- Bottom left — philosophy -->
+            <div class="hud-ambient hud-amb-bl">
+                WHAT RAVI SAUCE REPRESENTS:<br>
+                <span class="hud-amb-sep">— — —</span><br>
+                CURIOSITY ABOUT EXISTENCE<br>
+                THE SPACE BETWEEN NATURE<br>
+                AND THE MACHINE THAT READS IT<br>
+                PATTERNS HIDING IN PLAIN SIGHT<br>
+                <span class="hud-amb-sep">— — —</span><br>
+                <span class="hud-amb-g">LOOK CLOSER. LOOK AGAIN.</span>
+            </div>
+
+            <!-- Bottom right — universe observation -->
+            <div class="hud-ambient hud-amb-br">
+                THE PATTERN THAT REPEATS<br>
+                FROM ATOM TO GALAXY<br>
+                IT IS ALL ONE FORMULA<br>
+                <span class="hud-amb-sep">— — —</span><br>
+                WHAT EXISTS IN THIS WORLD<br>
+                IS WAITING TO BE NOTICED<br>
+                <span class="hud-amb-sep">— — —</span><br>
+                <span class="hud-amb-g">THE UNIVERSE COMPUTES</span><br>
+                <span class="hud-amb-g">ITSELF THROUGH GEOMETRY</span>
             </div>
 
             <!-- SCREEN CORNER COORDS -->
@@ -1646,15 +1719,27 @@ document.addEventListener('keydown', e => {
     setInterval(tick, 1000);
 })();
 
-// ── Panel videos: random start times so they look like 5 unique feeds ─
+// ── Panel videos: random start times (each source URL is unique so browser
+//    treats them as independent streams — no shared buffer sync) ────────
 (function () {
     document.querySelectorAll('.hud-vid').forEach(v => {
         const isMain = v.classList.contains('hud-vid-main');
-        v.addEventListener('loadedmetadata', () => {
+
+        function seekRandom() {
             if (!isMain && v.duration > 2) {
-                v.currentTime = Math.random() * v.duration;
+                // Pick a random point but leave 1s buffer before end
+                v.currentTime = 0.5 + Math.random() * (v.duration - 1.5);
             }
+        }
+
+        // Primary: set on loadedmetadata
+        v.addEventListener('loadedmetadata', seekRandom, { once: true });
+
+        // Fallback: if canplay fires before seek stuck, reapply
+        v.addEventListener('canplay', () => {
+            if (!isMain && v.currentTime < 0.3 && v.duration > 2) seekRandom();
         }, { once: true });
+
         v.addEventListener('playing', () => v.classList.add('playing'), { once: true });
     });
 })();
