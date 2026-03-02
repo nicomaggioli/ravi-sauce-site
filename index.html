@@ -1795,7 +1795,7 @@
         <div class="saved-empty" id="saved-empty" style="display:none;">
             <div class="saved-empty-mono">— COLLECTION EMPTY —</div>
             <p>Tap Save on any image to start your&nbsp;collection.</p>
-            <a href="#" class="browse-link" onclick="showPage('home');return false;">Browse Work</a>
+            <a href="/" class="browse-link" onclick="showPage('home');return false;">Browse Work</a>
         </div>
     </div>
 
@@ -2302,7 +2302,7 @@ function showPage(page) {
         m.classList.toggle('active', m.dataset.page === page));
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    window.location.hash = page;
+    history.pushState(null, '', '/' + (page === 'home' ? '' : page));
 
     if (page === 'saved') renderSaved();
     if (page === 'home') setTimeout(updateHeaderMode, 50);
@@ -2915,11 +2915,18 @@ function updateHeaderMode() {
 }
 window.addEventListener('scroll', updateHeaderMode, { passive: true });
 
-// ── Hash routing ──────────────────────────────────────────────────
-window.addEventListener('load', () => {
+// ── Routing ───────────────────────────────────────────────────────
+function handleRoute() {
+    const params = new URLSearchParams(window.location.search);
+    const redirectSlug = params.get('p');
+    if (redirectSlug) history.replaceState(null, '', '/' + redirectSlug);
+    const path = window.location.pathname.replace(/^\//, '') || 'home';
     const hash = window.location.hash.replace('#', '');
-    if (['home','saved','shop','contact'].includes(hash)) showPage(hash);
-});
+    const slug = redirectSlug || hash || path;
+    if (['home','saved','shop','contact'].includes(slug)) showPage(slug);
+}
+window.addEventListener('load', handleRoute);
+window.addEventListener('popstate', handleRoute);
 
 // ── Loader ────────────────────────────────────────────────────────
 (function () {
