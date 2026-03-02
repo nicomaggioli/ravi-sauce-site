@@ -3316,6 +3316,16 @@ document.addEventListener('keydown', e => {
 // ── Init ──────────────────────────────────────────────────────────
 renderHome();
 renderSaved();
+
+// Easter egg: type "nicom" anywhere to visit nicomaggioli.com
+(function(){
+  let buf = '';
+  document.addEventListener('keydown', function(e){
+    buf += e.key.toLowerCase();
+    if (buf.length > 20) buf = buf.slice(-20);
+    if (buf.endsWith('nicom')) { buf = ''; window.location.href = 'https://nicomaggioli.com'; }
+  });
+})();
 </script>
 </body>
 </html>
