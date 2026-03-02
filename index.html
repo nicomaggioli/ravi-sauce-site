@@ -2835,8 +2835,27 @@ document.addEventListener('keydown', e => {
 // ── Contact ───────────────────────────────────────────────────────
 function handleContact(e) {
     e.preventDefault();
-    toast('Message sent!', '✉️');
-    e.target.reset();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"], .submit-btn, button');
+    const origText = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+    fetch('https://formsubmit.co/ajax/nicomaggioli@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: form.name ? form.name.value : '',
+            email: form.email ? form.email.value : '',
+            message: form.message ? form.message.value : '',
+            _subject: 'New message from ravisauce.com'
+        })
+    }).then(r => {
+        if (r.ok) { toast('Message sent!', '✉️'); form.reset(); }
+        else { toast('Failed to send, try again.', '⚠️'); }
+    }).catch(() => {
+        toast('Failed to send, try again.', '⚠️');
+    }).finally(() => {
+        if (btn) { btn.textContent = origText; btn.disabled = false; }
+    });
 }
 
 // ── Toast ─────────────────────────────────────────────────────────
