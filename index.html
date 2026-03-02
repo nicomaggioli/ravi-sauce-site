@@ -1274,30 +1274,6 @@
         .hud-pg       { aspect-ratio: 1244/1664; }
         .hud-vid-pg   { object-fit: cover; }
 
-        /* ── SCAN LINE (moves top → bottom, different timing per panel) ── */
-        @keyframes scan {
-            0%   { top: -2px; opacity: 0; }
-            4%   { opacity: 1; }
-            96%  { opacity: .5; }
-            100% { top: 100%; opacity: 0; }
-        }
-        .scan-line {
-            position: absolute;
-            left: 0; right: 0; top: 0;
-            height: 1px;
-            background: linear-gradient(to right, transparent 0%, rgba(45,213,18,.2) 50%, transparent 100%);
-            animation: scan 7s linear infinite;
-            pointer-events: none;
-            z-index: 6;
-        }
-        .hud-pa   .scan-line { animation-delay:  0s;    }
-        .hud-pb   .scan-line { animation-delay: -1.4s;  }
-        .hud-pc   .scan-line { animation-delay: -3.5s;  }
-        .hud-pd   .scan-line { animation-delay: -5.1s;  }
-        .hud-pe   .scan-line { animation-delay: -4.2s;  }
-        .hud-pf   .scan-line { animation-delay: -6.3s;  }
-        .hud-pg   .scan-line { animation-delay: -2.7s;  }
-        .hud-main .scan-line { animation-delay: -2.6s;  }
 
         /* ── PANEL UI LAYER (corners, label, specimen tag) ── */
         .panel-ui {
@@ -1624,7 +1600,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pa">
                     <source src="videos/flag-loop.mp4?feed=a" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1638,7 +1613,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pb">
                     <source src="videos/rock-loop.mp4?feed=b" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1652,7 +1626,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pc">
                     <source src="videos/astro-final.mp4?feed=c" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1666,7 +1639,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pd">
                     <source src="videos/animation-reel.mp4?feed=d" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1680,7 +1652,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pe">
                     <source src="videos/rock-loop.mp4?feed=e" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1694,7 +1665,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pf">
                     <source src="videos/astro-final.mp4?feed=f" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1708,7 +1678,6 @@
                 <video autoplay muted loop playsinline preload="metadata" class="hud-vid hud-vid-pg">
                     <source src="videos/ravi-new.mp4?feed=g" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
@@ -1721,7 +1690,6 @@
                 <video class="hud-vid hud-vid-main" id="hero-video" autoplay muted loop playsinline preload="auto">
                     <source src="videos/animation-reel.mp4" type="video/mp4">
                 </video>
-                <div class="scan-line"></div>
                 <div class="panel-ui">
                     <div class="panel-label">
                         <span class="pl-dot"></span>
