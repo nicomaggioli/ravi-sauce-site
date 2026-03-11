@@ -1,22 +1,18 @@
 [
   {
     "id": "spx-001",
-    "spec": "SPX-001 / TEE",
+    "spec": "SPX-001 / RAV",
     "name": "Yellow Rav",
     "price": 85,
-    "cat": "tee",
+    "cat": "obj",
     "imgs": [
       "store/tee-chill-white.webp",
       "store/tee-chill-white-back.webp"
     ],
-    "desc": "The OG. Ravi in full relaxation mode. Heavyweight 100% cotton, oversized fit.",
+    "desc": "Glow in the dark. Protects from night monsters.",
     "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L",
-      "XL"
+      "Yellow"
     ],
-    "variantLabel": "Size"
+    "variantLabel": "Color"
   }
 ]
