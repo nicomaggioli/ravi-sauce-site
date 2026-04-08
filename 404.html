@@ -693,13 +693,13 @@
         .pdp-overlay.open { opacity: 1; pointer-events: all; }
         .pdp {
             background: #111; border-radius: 20px;
-            width: 100%; max-width: 860px; max-height: 90vh; overflow-y: auto;
+            width: 100%; max-width: 860px; height: min(620px, 90vh);
             display: grid; grid-template-columns: 1fr 1fr; position: relative;
             border: 1px solid #222;
         }
-        @media (max-width: 700px) { .pdp { grid-template-columns: 1fr; } }
-        .pdp-imgs { padding: 24px; display: flex; flex-direction: column; gap: 12px; }
-        .pdp-main { aspect-ratio: 1; background: #0d0d0d; border-radius: 12px; overflow: hidden; position: relative; }
+        @media (max-width: 700px) { .pdp { grid-template-columns: 1fr; height: auto; max-height: 90vh; overflow-y: auto; } }
+        .pdp-imgs { padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+        .pdp-main { flex: 1; min-height: 0; background: #0d0d0d; border-radius: 12px; overflow: hidden; position: relative; }
         .pdp-main img { width: 100%; height: 100%; object-fit: contain; padding: 8%; filter: drop-shadow(0 4px 20px rgba(0,0,0,.7)); transition: opacity .25s; }
         .pdp-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
         .pdp-thumb {
@@ -709,7 +709,7 @@
         }
         .pdp-thumb.active { border-color: var(--green); }
         .pdp-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 8%; }
-        .pdp-info { padding: 32px 28px 32px 8px; display: flex; flex-direction: column; gap: 16px; }
+        .pdp-info { padding: 32px 28px 32px 8px; display: flex; flex-direction: column; gap: 16px; min-height: 0; overflow-y: auto; }
         @media (max-width: 700px) { .pdp-info { padding: 0 24px 28px; } }
         .pdp-spec { font-family: 'Courier New', monospace; font-size: 8px; letter-spacing: 3px; color: rgba(45,213,18,.7); text-transform: uppercase; }
         .pdp-name { font-size: 24px; font-weight: 700; color: #f0f0f0; letter-spacing: -0.5px; }
@@ -2591,7 +2591,11 @@ function openPDP(id) {
     const p = PRODUCTS.find(x => x.id === id);
     if (!p) return;
     currentPDP = p;
-    selectedSize = p.sizes.length === 1 ? p.sizes[0] : null;
+    const sizesArr = Array.isArray(p.sizes) ? p.sizes : [];
+    const hasSizes = sizesArr.length > 0;
+    selectedSize = hasSizes && sizesArr.length === 1 ? sizesArr[0]
+                 : hasSizes ? null
+                 : 'One Size';
 
     document.getElementById('pdp-spec').textContent      = p.spec;
     document.getElementById('pdp-name').textContent      = p.name;
@@ -2599,6 +2603,7 @@ function openPDP(id) {
     document.getElementById('pdp-desc').textContent      = p.desc;
     document.getElementById('pdp-main-img').src          = p.imgs[0];
     document.getElementById('pdp-size-label').textContent = 'Select ' + (p.variantLabel || 'Size');
+    document.getElementById('pdp-size-label').style.display = hasSizes ? '' : 'none';
 
     const thumbs = document.getElementById('pdp-thumbs');
     thumbs.innerHTML = '';
@@ -2617,9 +2622,10 @@ function openPDP(id) {
 
     const sizes = document.getElementById('pdp-sizes');
     sizes.innerHTML = '';
-    p.sizes.forEach(sz => {
+    sizes.style.display = hasSizes ? '' : 'none';
+    sizesArr.forEach(sz => {
         const btn = document.createElement('button');
-        btn.className = 'pdp-size-btn' + (p.sizes.length === 1 ? ' active' : '');
+        btn.className = 'pdp-size-btn' + (sizesArr.length === 1 ? ' active' : '');
         btn.textContent = sz;
         btn.onclick = () => {
             selectedSize = sz;
@@ -2642,13 +2648,15 @@ function closePDP() {
 let cart = JSON.parse(localStorage.getItem('rsl-cart') || '[]');
 
 function addToCart() {
-    if (!selectedSize) {
+    const hasSizes = Array.isArray(currentPDP.sizes) && currentPDP.sizes.length > 0;
+    if (hasSizes && !selectedSize) {
         const el = document.getElementById('pdp-sizes');
         el.classList.remove('shake');
         void el.offsetWidth;
         el.classList.add('shake');
         return;
     }
+    if (!selectedSize) selectedSize = 'One Size';
     const ex = cart.find(i => i.id === currentPDP.id && i.size === selectedSize);
     if (ex) { ex.qty++; } else { cart.push({ id: currentPDP.id, size: selectedSize, qty: 1 }); }
     saveCart();
@@ -2950,6 +2958,14 @@ window.addEventListener('popstate', handleRoute);
 // ── Loader ────────────────────────────────────────────────────────
 (function () {
     const ldrEl     = document.getElementById('loader');
+
+    // Skip loader on refresh / repeat visits within the same browser session
+    if (sessionStorage.getItem('rsl-loaded') === '1') {
+        ldrEl.classList.add('done');
+        document.body.classList.add('ready');
+        return;
+    }
+
     const ldrCount  = document.getElementById('ldr-count');
     const ldrFill   = document.getElementById('ldr-fill');
     const ldrStatus = document.getElementById('ldr-status');
@@ -2980,6 +2996,7 @@ window.addEventListener('popstate', handleRoute);
         setTimeout(() => {
             ldrEl.classList.add('done');
             document.body.classList.add('ready');
+            sessionStorage.setItem('rsl-loaded', '1');
             updateHeaderMode();
         }, 480);
     }
