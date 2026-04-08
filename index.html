@@ -1922,7 +1922,7 @@
         <div class="cart-subtotal-row"><span>SUBTOTAL</span><span id="cart-subtotal">$0</span></div>
         <div class="cart-subtotal-row"><span>SHIPPING</span><span>$12</span></div>
         <div class="cart-subtotal-row total"><span>TOTAL</span><span id="cart-total">$0</span></div>
-        <button class="cart-checkout-btn" onclick="openCheckout()">Checkout</button>
+        <button class="cart-checkout-btn" onclick="stripeCheckout()">Checkout</button>
     </div>
 </div>
 
@@ -2738,7 +2738,45 @@ function closeCart() {
     document.body.style.overflow = '';
 }
 
-// ── CHECKOUT ──────────────────────────────────────────────────────
+// ── STRIPE CHECKOUT ───────────────────────────────────────────────
+async function stripeCheckout() {
+    if (!cart.length) return;
+    const btn = document.querySelector('.cart-checkout-btn');
+    const original = btn.textContent;
+    btn.textContent = 'Loading...';
+    btn.disabled = true;
+    try {
+        const res = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: cart })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.url) throw new Error(data.error || 'Checkout failed');
+        window.location.href = data.url;
+    } catch (e) {
+        toast('Checkout error: ' + e.message, '!');
+        btn.textContent = original;
+        btn.disabled = false;
+    }
+}
+
+// Handle return from Stripe Checkout
+(function () {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('checkout');
+    if (status === 'success') {
+        cart = [];
+        localStorage.setItem('rsl-cart', '[]');
+        setTimeout(() => toast('Order received — thanks!', '✓'), 800);
+        history.replaceState(null, '', window.location.pathname);
+    } else if (status === 'cancel') {
+        setTimeout(() => toast('Checkout cancelled', '·'), 800);
+        history.replaceState(null, '', window.location.pathname);
+    }
+})();
+
+// ── LEGACY CHECKOUT (unused, kept for reference) ──────────────────
 let coStep = 1;
 
 function openCheckout() {
