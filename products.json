@@ -1,18 +1,16 @@
 [
   {
     "id": "spx-001",
-    "spec": "SPX-001 / RAV",
-    "name": "Yellow Rav",
-    "price": 85,
+    "spec": "CR-001 / RAV",
+    "name": "Ravi Concrete Figurine – Series 01",
+    "price": 49,
     "cat": "obj",
     "imgs": [
-      "store/tee-chill-white.webp",
-      "store/tee-chill-white-back.webp"
+      "store/ravicretefront.png",
+      "store/Ravicreteback.png"
     ],
-    "desc": "Glow in the dark. Protects from night monsters.",
-    "sizes": [
-      "Yellow"
-    ],
+    "desc": "Meet Ravi. A little concrete creature standing 4 inches tall and 3 inches wide, hand cast and full of character. No two are exactly alike because concrete does what it wants. Air bubbles, texture shifts, tiny imperfections, that's the charm. Sometimes I throw dye into the mix, so there's always a chance yours shows up in a color way you won't see again. Collect one, collect a few. They all have their own personality.",
+    "sizes": [],
     "variantLabel": "Color"
   }
 ]
