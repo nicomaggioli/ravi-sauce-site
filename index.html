@@ -1827,7 +1827,6 @@
                             <img id="solo-img" src="" alt="">
                             <div class="shop-scan"></div>
                         </div>
-                        <div class="solo-thumbs" id="solo-thumbs"></div>
                     </div>
                     <div class="solo-info-col" id="solo-info-col">
                         <div class="solo-catalog-ref" id="solo-catalog-ref">SPECIMEN // —</div>
@@ -1835,6 +1834,7 @@
                         <h2 class="solo-name" id="solo-name"></h2>
                         <div class="solo-price" id="solo-price"></div>
                         <p class="solo-desc" id="solo-desc"></p>
+                        <div class="solo-thumbs" id="solo-thumbs"></div>
                         <div class="solo-data-strip" id="solo-data-strip"></div>
                         <div class="solo-size-label" id="solo-size-label">Select Size</div>
                         <div class="solo-sizes" id="solo-sizes"></div>
@@ -2428,7 +2428,9 @@ function renderSoloShop() {
     const p     = PRODUCTS[soloIdx];
     const total = PRODUCTS.length;
     const sizes = p.sizes || [];
-    soloSize = sizes.length === 1 ? sizes[0] : null;
+    soloSize = !sizes.length ? 'One Size'
+             : sizes.length === 1 ? sizes[0]
+             : null;
 
     const pad    = n => String(n).padStart(2,'0');
     const single = total === 1;
@@ -2541,12 +2543,14 @@ function soloJump(i) {
 }
 
 function soloAddToCart() {
-    if (!soloSize) {
+    const p = PRODUCTS[soloIdx];
+    const hasSizes = Array.isArray(p.sizes) && p.sizes.length > 0;
+    if (hasSizes && !soloSize) {
         const el = document.getElementById('solo-sizes');
         el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
         return;
     }
-    const p  = PRODUCTS[soloIdx];
+    if (!soloSize) soloSize = 'One Size';
     const ex = cart.find(i => i.id === p.id && i.size === soloSize);
     if (ex) { ex.qty++; } else { cart.push({ id: p.id, size: soloSize, qty: 1 }); }
     saveCart(); updateCartBadge();
