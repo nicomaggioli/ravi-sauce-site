@@ -1,0 +1,5 @@
+# Source files — not served on the web
+videos/originals/
+images/originals/
+.DS_Store
+**/.DS_Store
