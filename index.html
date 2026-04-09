@@ -895,19 +895,20 @@
         /* body grid */
         .solo-body {
             display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
-            padding: 36px 0; align-items: start;
+            padding: 36px 0; align-items: stretch;
         }
-        @media (max-width: 700px) { .solo-body { grid-template-columns: 1fr; gap: 28px; padding: 28px 0; } }
+        @media (max-width: 700px) { .solo-body { grid-template-columns: 1fr; gap: 28px; padding: 28px 0; align-items: start; } }
 
         /* image column */
         .solo-img-col { display: flex; flex-direction: column; gap: 12px; }
 
         .solo-img-wrap {
-            aspect-ratio: 1; width: 100%;
+            flex: 1; width: 100%; min-height: 0;
             background: #0d0d0d; border-radius: 20px;
             border: 1px solid #1a1a1a; overflow: hidden; position: relative;
             transition: border-color .3s;
         }
+        @media (max-width: 700px) { .solo-img-wrap { aspect-ratio: 1; flex: none; } }
         .solo-img-wrap:hover { border-color: rgba(45,213,18,.3); }
 
         /* 4-corner bracket marks */
