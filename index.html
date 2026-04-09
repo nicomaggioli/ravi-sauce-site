@@ -903,11 +903,12 @@
         .solo-img-col { display: flex; flex-direction: column; gap: 12px; }
 
         .solo-img-wrap {
-            aspect-ratio: 1; width: 100%;
+            width: 100%;
             background: #0d0d0d; border-radius: 20px;
             border: 1px solid #1a1a1a; overflow: hidden; position: relative;
             transition: border-color .3s;
         }
+        @media (max-width: 700px) { .solo-img-wrap { aspect-ratio: 1 !important; height: auto !important; } }
         .solo-img-wrap:hover { border-color: rgba(45,213,18,.3); }
 
         /* 4-corner bracket marks */
@@ -2459,6 +2460,25 @@ let soloIdx  = 0;
 let soloSize = null;
 let soloQty  = 1;
 
+// Keep image container height matched to info column height on desktop
+function initSoloHeightSync() {
+    const wrap = document.getElementById('solo-img-wrap');
+    const info = document.getElementById('solo-info-col');
+    if (!wrap || !info) return;
+    const apply = () => {
+        if (window.innerWidth <= 700) {
+            wrap.style.height = '';
+        } else {
+            wrap.style.height = info.offsetHeight + 'px';
+        }
+    };
+    if ('ResizeObserver' in window) {
+        new ResizeObserver(apply).observe(info);
+    }
+    window.addEventListener('resize', apply);
+    apply();
+}
+
 function soloQtyChange(delta) {
     soloQty = Math.max(1, Math.min(99, soloQty + delta));
     const el = document.getElementById('solo-qty-value');
@@ -2906,6 +2926,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         PRODUCTS = await res.json();
     } catch(e) { console.warn('products.json not found, shop empty'); }
     renderSoloShop();
+    initSoloHeightSync();
     updateCartBadge();
 
     document.getElementById('co-card')?.addEventListener('input', e => {
