@@ -2500,11 +2500,14 @@ function renderSoloShop() {
 
     // Data strip
     const strip = document.getElementById('solo-data-strip');
-    strip.innerHTML = [
+    const cells = [
         ['CAT',   p.cat  || '—'],
         ['PRICE', '$' + p.price],
-        ['UNITS', sizes.length ? sizes.length + ' opts' : '—'],
-    ].map(([l,v]) => `<div class="solo-data-cell"><span class="solo-data-label">${l}</span><span class="solo-data-value">${v}</span></div>`).join('');
+    ];
+    if (sizes.length) cells.push(['UNITS', sizes.length + ' opts']);
+    strip.innerHTML = cells.map(([l,v]) =>
+        `<div class="solo-data-cell"><span class="solo-data-label">${l}</span><span class="solo-data-value">${v}</span></div>`
+    ).join('');
 
     // Image
     const img = document.getElementById('solo-img');
