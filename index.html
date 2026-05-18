@@ -79,16 +79,19 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 
 /* responsive */
 @media (max-width:820px){
-  .frame{padding:18px 22px 14px;gap:14px}
-  .hero{grid-template-columns:1fr;gap:clamp(14px,2vh,24px);text-align:center}
-  .stage{order:1}
-  .product{order:2;align-items:center;text-align:center;margin:0 auto;gap:14px}
-  .cta{align-items:center;max-width:380px;margin:0 auto}
-  .price-row{justify-content:center}
-  .trust{justify-content:center}
-  .wallet{max-height:min(40vh,72vw)}
+  html,body{overflow:auto;height:auto;min-height:100%}
+  .frame{height:auto;min-height:100dvh;padding:18px 22px 36px;gap:24px}
+  .hero{grid-template-columns:1fr;gap:clamp(28px,4vh,44px);text-align:center;align-items:start}
+  .stage{order:1;width:100%;min-height:auto}
+  .product{order:2;align-items:center;text-align:center;margin:0 auto;gap:18px;max-width:none;width:100%}
+  .lede{max-width:36ch;margin:0 auto}
+  .cta{align-items:center;max-width:none;width:100%;margin:0 auto}
+  .price-row{justify-content:center;width:100%;padding-top:22px}
+  .price-row::before{width:100%;left:0}
+  .buy{width:100%;align-self:stretch;padding:20px 24px;font-size:13px;letter-spacing:.16em}
+  .wallet{max-height:min(60vh,92vw);max-width:92vw}
 }
-@media (max-height:620px){
+@media (max-height:620px) and (min-width:821px){
   .lede{display:none}
   .wallet{max-height:42vh}
 }
