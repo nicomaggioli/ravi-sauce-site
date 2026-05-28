@@ -29,8 +29,15 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 /* hero */
 .hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:clamp(28px,5vw,72px);min-height:0;overflow:hidden}
 
-.stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;height:100%;overflow:visible}
-.wallet-wrap{position:relative;display:block;line-height:0;max-width:100%;max-height:100%;cursor:pointer}
+.stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;height:100%;overflow:visible;perspective:1400px}
+.wallet-wrap{position:relative;display:block;line-height:0;max-width:100%;max-height:100%;cursor:pointer;
+  transform:rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));
+  transform-style:preserve-3d;
+  transition:transform .65s cubic-bezier(.2,.8,.2,1);
+  will-change:transform;
+}
+.wallet-wrap.flipping{animation:flip-pulse .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes flip-pulse{0%{transform:scale(1)}50%{transform:scale(.965) rotateY(8deg)}100%{transform:scale(1)}}
 .wallet{width:auto;max-width:100%;max-height:min(94vh,55vw);height:auto;display:block;
   user-select:none;-webkit-user-drag:none;
 }
@@ -62,10 +69,13 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
   padding:clamp(16px,2.2vh,20px) 0;background:var(--emerald);color:var(--paper);
   font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
   text-decoration:none;border:none;cursor:pointer;position:relative;overflow:hidden;
-  transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .35s, letter-spacing .35s;
+  box-shadow:0 0 0 0 rgba(15,92,69,0);
 }
 .buy::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateX(-101%);transition:transform .55s cubic-bezier(.65,0,.35,1);z-index:0}
+.buy:hover{transform:translateY(-2px);letter-spacing:.18em;box-shadow:0 18px 36px -16px rgba(15,92,69,.55)}
 .buy:hover::before{transform:translateX(0)}
+.buy:active{transform:translateY(0);transition-duration:.1s}
 .buy>*{position:relative;z-index:1}
 .buy .arrow{transition:transform .35s}
 .buy:hover .arrow{transform:translateX(6px)}
@@ -74,8 +84,9 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .r{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
 .d1{animation-delay:.10s}.d2{animation-delay:.32s}.d3{animation-delay:.55s}.d4{animation-delay:.82s}.d5{animation-delay:1.08s}.d6{animation-delay:1.32s}.d7{animation-delay:1.58s}
 @keyframes rise{to{opacity:1;transform:translateY(0)}}
-.stage .wallet{opacity:0;transform:translateY(24px) scale(.97);animation:walletRise 1.4s cubic-bezier(.2,.8,.2,1) .25s forwards}
+.stage .wallet{opacity:0;transform:translateY(24px) scale(.97);animation:walletRise 1.4s cubic-bezier(.2,.8,.2,1) .25s forwards, float 7s ease-in-out 2s infinite}
 @keyframes walletRise{to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
 /* responsive */
 @media (max-width:820px){
@@ -142,11 +153,43 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 <script>
   (() => {
     const wrap = document.getElementById('wallet-wrap');
-    const toggle = () => wrap.classList.toggle('flipped');
+    const stage = document.querySelector('.stage');
+    if (!wrap || !stage) return;
+
+    const toggle = () => {
+      wrap.classList.toggle('flipped');
+      wrap.classList.remove('flipping');
+      void wrap.offsetWidth;            // restart animation
+      wrap.classList.add('flipping');
+    };
     wrap.addEventListener('click', toggle);
     wrap.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
+
+    // subtle 3D mouse-follow tilt
+    const MAX = 6;                       // max tilt in degrees
+    let rafId;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarsePointer = matchMedia('(pointer: coarse)').matches;
+
+    if (!reduceMotion && !coarsePointer) {
+      stage.addEventListener('mousemove', e => {
+        const rect = stage.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width - 0.5;
+        const ny = (e.clientY - rect.top)  / rect.height - 0.5;
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          wrap.style.setProperty('--tilt-y', (nx *  MAX).toFixed(2) + 'deg');
+          wrap.style.setProperty('--tilt-x', (-ny * MAX).toFixed(2) + 'deg');
+        });
+      });
+      stage.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(rafId);
+        wrap.style.setProperty('--tilt-x', '0deg');
+        wrap.style.setProperty('--tilt-y', '0deg');
+      });
+    }
   })();
 </script>
 
