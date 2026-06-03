@@ -70,21 +70,6 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .buy .arrow{transition:transform .35s}
 .buy:hover .arrow{transform:translateX(6px)}
 
-/* notify form */
-.notify{width:280px;margin-top:18px}
-.notify-label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:500;margin-bottom:10px}
-.notify-row{display:flex;border:1px solid var(--rule);transition:border-color .25s}
-.notify-row:focus-within{border-color:var(--ink)}
-.notify-row input{flex:1;min-width:0;padding:12px 14px;border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:var(--ink);letter-spacing:0}
-.notify-row input::placeholder{color:rgba(0,0,0,.4)}
-.notify-row button{padding:12px 16px;background:var(--ink);color:var(--paper);font-family:inherit;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;border:none;cursor:pointer;transition:background .25s}
-.notify-row button:hover{background:var(--emerald)}
-.notify-row button:disabled{opacity:.5;cursor:wait}
-.notify-status{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:500;margin-top:10px;min-height:14px}
-.notify-status.ok{color:var(--emerald)}
-.notify-status.err{color:#a72b1f}
-.notify.success .notify-row{opacity:.5;pointer-events:none}
-
 /* reveal */
 .r{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
 .d1{animation-delay:.10s}.d2{animation-delay:.32s}.d3{animation-delay:.55s}.d4{animation-delay:.82s}.d5{animation-delay:1.08s}.d6{animation-delay:1.32s}.d7{animation-delay:1.58s}
@@ -106,8 +91,6 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
   .price-row{justify-content:center;width:100%;padding-top:18px}
   .price-row::before{width:100%;left:0}
   .buy{width:100%;align-self:stretch;padding:20px 24px;font-size:13px;letter-spacing:.16em}
-  .notify{width:100%;max-width:380px}
-  .notify-label,.notify-status{text-align:left}
   .wallet{max-height:min(56vh,88vw);max-width:90vw}
 }
 @media (max-height:620px) and (min-width:821px){
@@ -148,14 +131,6 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
         <a href="https://buy.stripe.com/eVq4gBaeM5OU2SybPZ7ok04" class="buy r d6" aria-label="Buy Shell Wallet for $72">
           <span>Buy now</span>
         </a>
-        <form class="notify r d7" id="notify-form" novalidate>
-          <p class="notify-label">Get notified about the next drop</p>
-          <div class="notify-row">
-            <input type="email" name="email" placeholder="you@email.com" autocomplete="email" required>
-            <button type="submit">Notify me</button>
-          </div>
-          <p class="notify-status" aria-live="polite"></p>
-        </form>
       </div>
 
     </div>
@@ -171,37 +146,6 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
     wrap.addEventListener('click', toggle);
     wrap.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-    });
-
-    const form = document.getElementById('notify-form');
-    const status = form.querySelector('.notify-status');
-    const button = form.querySelector('button');
-    const input = form.querySelector('input[name=email]');
-    const setStatus = (msg, kind) => { status.textContent = msg; status.className = 'notify-status' + (kind ? ' ' + kind : ''); };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = input.value.trim().toLowerCase();
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { setStatus('Enter a valid email', 'err'); return; }
-      button.disabled = true; setStatus('Sending…');
-      try {
-        const res = await fetch('/api/subscribe', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email}),
-        });
-        const data = await res.json().catch(() => ({}));
-        if (res.ok) {
-          form.classList.add('success');
-          setStatus(data.duplicate ? "You're already on the list ✓" : "On the list ✓", 'ok');
-        } else {
-          setStatus(data.error || 'Could not subscribe', 'err');
-          button.disabled = false;
-        }
-      } catch {
-        setStatus('Network error', 'err');
-        button.disabled = false;
-      }
     });
   })();
 </script>
