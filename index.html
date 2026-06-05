@@ -39,6 +39,14 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .wallet-hover{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;visibility:hidden;z-index:2;pointer-events:none}
 .wallet-wrap.flipped .wallet-base{visibility:hidden}
 .wallet-wrap.flipped .wallet-hover{visibility:visible}
+.wallet-hint{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:3;pointer-events:none;
+  font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  color:var(--paper);background:rgba(0,0,0,.78);padding:9px 16px;border-radius:999px;
+  white-space:nowrap;opacity:0;transition:opacity .25s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.wallet-wrap:hover .wallet-hint{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.wallet-wrap.flipped .wallet-hint{display:none}
+@media (hover:none){.wallet-hint{display:none}}
 
 /* product column */
 .product{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,2vh,22px);max-width:440px;text-align:left;width:100%}
@@ -110,9 +118,10 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
   <section class="hero">
 
     <div class="stage">
-      <div class="wallet-wrap" id="wallet-wrap" role="button" tabindex="0" aria-label="Click to flip wallet">
-        <img class="wallet wallet-base" src="wallet-sand.png" alt="RAVISAUCE Shell bifold wallet — emerald, top grain leather, resting on sand">
+      <div class="wallet-wrap" id="wallet-wrap" role="button" tabindex="0" aria-label="Click to open wallet">
+        <img class="wallet wallet-base" src="wallet-sand.png" alt="RAVISAUCE Shell bifold wallet — emerald, top grain leather, embossed scallop pattern">
         <img class="wallet wallet-hover" src="wallet-open.png" alt="" aria-hidden="true">
+        <span class="wallet-hint" aria-hidden="true">Click to open</span>
       </div>
     </div>
 
