@@ -44,8 +44,9 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
   color:var(--paper);background:rgba(0,0,0,.78);padding:9px 16px;border-radius:999px;
   white-space:nowrap;opacity:0;transition:opacity .25s ease, transform .35s cubic-bezier(.2,.8,.2,1);
 }
+.wallet-hint::after{content:'Click to open'}
+.wallet-wrap.flipped .wallet-hint::after{content:'Click to close'}
 .wallet-wrap:hover .wallet-hint{opacity:1;transform:translateX(-50%) translateY(-4px)}
-.wallet-wrap.flipped .wallet-hint{display:none}
 @media (hover:none){.wallet-hint{display:none}}
 
 /* product column */
@@ -121,7 +122,7 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
       <div class="wallet-wrap" id="wallet-wrap" role="button" tabindex="0" aria-label="Click to open wallet">
         <img class="wallet wallet-base" src="wallet-sand.png" alt="RAVISAUCE Shell bifold wallet — emerald, top grain leather, embossed scallop pattern">
         <img class="wallet wallet-hover" src="wallet-open.png" alt="" aria-hidden="true">
-        <span class="wallet-hint" aria-hidden="true">Click to open</span>
+        <span class="wallet-hint" aria-hidden="true"></span>
       </div>
     </div>
 
@@ -151,7 +152,10 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 <script>
   (() => {
     const wrap = document.getElementById('wallet-wrap');
-    const toggle = () => wrap.classList.toggle('flipped');
+    const toggle = () => {
+      wrap.classList.toggle('flipped');
+      wrap.setAttribute('aria-label', wrap.classList.contains('flipped') ? 'Click to close wallet' : 'Click to open wallet');
+    };
     wrap.addEventListener('click', toggle);
     wrap.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
