@@ -104,7 +104,7 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
     </div>
 
     <div class="drop r d3">
-      <div class="drop-label r d3">Shell Wallet drops <span class="em">Friday, June 12 · 2:00 PM EST</span></div>
+      <div class="drop-label r d3">Shell Wallet drops <span class="em">Sunday, June 14 · 3:00 PM EST</span></div>
       <div class="countdown" id="countdown" aria-live="polite">
         <div class="cd-unit"><span class="cd-value" data-unit="d">00</span><span class="cd-label">Days</span></div>
         <span class="cd-sep">:</span>
@@ -133,8 +133,8 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
 
-    // Drop: Friday June 12, 2026 at 2pm Eastern (EDT, UTC-4 in June)
-    const DROP = new Date('2026-06-12T14:00:00-04:00').getTime();
+    // Drop: Sunday June 14, 2026 at 3pm Eastern (EDT, UTC-4 in June)
+    const DROP = new Date('2026-06-14T15:00:00-04:00').getTime();
     const drop = document.querySelector('.drop');
     const elD = drop.querySelector('[data-unit=d]');
     const elH = drop.querySelector('[data-unit=h]');
