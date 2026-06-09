@@ -21,7 +21,7 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .frame{position:relative;height:100vh;height:100dvh;display:grid;grid-template-rows:auto 1fr;padding:clamp(18px,2vw,44px) clamp(28px,3.2vw,80px) clamp(20px,2.4vw,52px);gap:clamp(8px,1.4vw,28px)}
 
 /* top */
-.top{display:flex;justify-content:flex-end;align-items:center}
+.top{display:flex;justify-content:flex-end;align-items:center;gap:clamp(20px,2vw,40px)}
 .top .help{font-size:clamp(11px,0.78vw,17px);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);text-decoration:none;font-weight:500;position:relative;padding:4px 0;transition:color .25s}
 .top .help::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--emerald);transition:width .45s cubic-bezier(.65,0,.35,1)}
 .top .help:hover{color:var(--emerald)}
@@ -90,6 +90,7 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 <main class="frame">
 
   <header class="top">
+    <a href="https://www.instagram.com/ravisauce/" target="_blank" rel="noopener" class="help r d1">Instagram</a>
     <a href="mailto:salsadiravi@gmail.com" class="help r d1">Contact</a>
   </header>
 
