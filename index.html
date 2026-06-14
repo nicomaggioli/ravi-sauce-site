@@ -79,6 +79,16 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .buy .arrow{transition:transform .35s}
 .buy:hover .arrow{transform:translateX(6px)}
 
+/* region selector */
+.region{display:flex;width:280px;border:1px solid var(--rule)}
+.region button{flex:1;padding:11px 0;background:none;border:none;cursor:pointer;
+  font-family:inherit;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  color:var(--ink-2);transition:background .25s,color .25s}
+.region button + button{border-left:1px solid var(--rule)}
+.region button:hover{color:var(--ink)}
+.region button.active{background:var(--emerald);color:var(--paper)}
+.region button.active:hover{color:var(--paper)}
+
 /* reveal */
 .r{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
 .d1{animation-delay:.10s}.d2{animation-delay:.32s}.d3{animation-delay:.55s}.d4{animation-delay:.82s}.d5{animation-delay:1.08s}.d6{animation-delay:1.32s}.d7{animation-delay:1.58s}
@@ -99,6 +109,7 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
   .cta{align-items:center;max-width:none;width:100%;margin:0 auto;gap:14px}
   .price-row{justify-content:center;width:100%;padding-top:18px}
   .price-row::before{width:100%;left:0}
+  .region{width:100%}
   .buy{width:100%;align-self:stretch;padding:20px 24px;font-size:13px;letter-spacing:.16em}
   .wallet{max-height:min(56vh,88vw);max-width:90vw}
 }
@@ -139,7 +150,11 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
         <div class="price-row r d5">
           <div class="price">$64</div>
         </div>
-        <a href="https://buy.stripe.com/eVq7sN86E916eBg1bl7ok05" class="buy r d6" aria-label="Buy Ark Wallet for $64">
+        <div class="region r d6" role="group" aria-label="Shipping region">
+          <button type="button" class="active" data-region="usa" aria-pressed="true">USA</button>
+          <button type="button" data-region="intl" aria-pressed="false">Other Country</button>
+        </div>
+        <a href="https://buy.stripe.com/eVq7sN86E916eBg1bl7ok05" class="buy r d7" id="buy-btn" aria-label="Buy Ark Wallet for $64 — ships to USA">
           <span>Buy now</span>
         </a>
       </div>
@@ -161,6 +176,24 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
     wrap.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
+
+    // Region selector → route Buy now to the matching Stripe checkout
+    const LINKS = {
+      usa:  'https://buy.stripe.com/eVq7sN86E916eBg1bl7ok05',
+      intl: 'https://buy.stripe.com/eVq9AVcmU3GM8cS9HR7ok06'
+    };
+    const buyBtn = document.getElementById('buy-btn');
+    const regionBtns = document.querySelectorAll('.region button');
+    regionBtns.forEach(btn => btn.addEventListener('click', () => {
+      regionBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      const region = btn.dataset.region;
+      buyBtn.href = LINKS[region];
+      buyBtn.setAttribute('aria-label', region === 'intl'
+        ? 'Buy Ark Wallet for $64 — ships internationally'
+        : 'Buy Ark Wallet for $64 — ships to USA');
+    }));
   })();
 </script>
 
