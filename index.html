@@ -4,44 +4,44 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RAVISAUCE — Ark Wallet</title>
-<meta name="description" content="Emerald Green Bifold Wallet · Embossed Ark Shell Pattern · Top Grain Cowhide Leather">
 <link rel="icon" href="ravi-logo.png">
 <style>
 :root{
   --paper:#FFFFFF;
   --ink:#000000;
   --ink-2:#5a5a5a;
-  --ink-3:#9a9a9a;
   --emerald:#0F5C45;
   --rule:rgba(0,0,0,.18);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helvetica Neue','Helvetica','Arial',sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;letter-spacing:-.005em}
 
-/* frame — scales with viewport width on wide displays */
-.frame{position:relative;height:100vh;height:100dvh;display:grid;grid-template-rows:auto 1fr;padding:clamp(18px,2vw,44px) clamp(28px,3.2vw,80px) clamp(20px,2.4vw,52px);gap:clamp(8px,1.4vw,28px)}
+/* frame */
+.frame{position:relative;height:100vh;height:100dvh;display:grid;grid-template-rows:auto 1fr;padding:clamp(18px,2.6vh,28px) clamp(28px,4vw,56px) clamp(20px,3vh,32px);gap:clamp(8px,1.6vh,20px)}
 
 /* top */
 .top{display:flex;justify-content:flex-end;align-items:center;gap:clamp(20px,2vw,40px)}
-.top .help{font-size:clamp(11px,0.78vw,17px);letter-spacing:.16em;text-transform:uppercase;color:var(--ink);text-decoration:none;font-weight:500;position:relative;padding:4px 0;transition:color .25s}
+.top .help{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);text-decoration:none;font-weight:500;position:relative;padding:4px 0;transition:color .25s}
 .top .help::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--emerald);transition:width .45s cubic-bezier(.65,0,.35,1)}
 .top .help:hover{color:var(--emerald)}
 .top .help:hover::after{width:100%}
 
-/* hero — centered single column */
-.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(24px,3.6vw,84px);min-height:0;overflow:visible;text-align:center}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:clamp(28px,5vw,72px);min-height:0;overflow:hidden}
 
-/* wallet */
-.stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;overflow:visible}
-.wallet-wrap{position:relative;display:block;line-height:0;cursor:pointer}
-.wallet{width:auto;max-width:min(100%,1000px);max-height:min(72vh,55vw);height:auto;display:block;user-select:none;-webkit-user-drag:none}
+.stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;height:100%;overflow:visible}
+.wallet-wrap{position:relative;display:block;line-height:0;max-width:100%;max-height:100%;cursor:pointer}
+.wallet{width:auto;max-width:100%;max-height:min(94vh,55vw);height:auto;display:block;
+  user-select:none;-webkit-user-drag:none;
+}
+.wallet-wrap{cursor:pointer}
 .wallet-base{position:relative;z-index:1}
 .wallet-hover{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;visibility:hidden;z-index:2;pointer-events:none}
 .wallet-wrap.flipped .wallet-base{visibility:hidden}
 .wallet-wrap.flipped .wallet-hover{visibility:visible}
-.wallet-hint{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);z-index:3;pointer-events:none;
-  font-size:clamp(10.5px,0.72vw,15px);letter-spacing:.22em;text-transform:uppercase;font-weight:500;
-  color:var(--paper);background:rgba(0,0,0,.78);padding:clamp(9px,0.65vw,14px) clamp(16px,1.1vw,24px);border-radius:999px;
+.wallet-hint{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);z-index:3;pointer-events:none;
+  font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  color:var(--paper);background:rgba(0,0,0,.78);padding:9px 16px;border-radius:999px;
   white-space:nowrap;opacity:0;transition:opacity .25s ease, transform .35s cubic-bezier(.2,.8,.2,1);
 }
 .wallet-hint::after{content:'Click to open'}
@@ -49,37 +49,39 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 .wallet-wrap:hover .wallet-hint{opacity:1;transform:translateX(-50%) translateY(-4px)}
 @media (hover:none){.wallet-hint{display:none}}
 
-/* countdown block */
-.drop{display:flex;flex-direction:column;align-items:center;gap:clamp(12px,1.4vw,28px)}
-.tagline{font-size:clamp(11px,0.82vw,16px);letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);font-weight:500;max-width:90vw;line-height:1.6}
-.drop-label{font-size:clamp(11px,0.85vw,18px);letter-spacing:.28em;text-transform:uppercase;color:var(--ink);font-weight:500}
-.drop-label .em{color:var(--emerald)}
+/* product column */
+.product{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,2vh,22px);max-width:440px;text-align:left;width:100%}
 
-.countdown{display:flex;align-items:baseline;gap:clamp(14px,2.2vw,48px);font-variant-numeric:tabular-nums}
-.cd-unit{display:flex;flex-direction:column;align-items:center;gap:clamp(6px,0.5vw,12px);min-width:clamp(48px,6.4vw,128px)}
-.cd-value{font-size:clamp(40px,5.4vw,128px);font-weight:500;line-height:1;letter-spacing:-.02em;color:var(--ink)}
-.cd-label{font-size:clamp(9.5px,0.7vw,15px);letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
-.cd-sep{font-size:clamp(32px,4.4vw,92px);font-weight:300;color:var(--ink-3);line-height:1;align-self:flex-start;margin-top:clamp(6px,0.4vw,10px)}
+.kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:500}
 
-.drop-done{display:none;flex-direction:column;align-items:center;gap:clamp(14px,1.4vw,24px)}
-.drop-done .live{font-size:clamp(14px,1vw,20px);letter-spacing:.28em;text-transform:uppercase;color:var(--emerald);font-weight:500}
-.drop.expired .countdown,.drop.expired .drop-label{display:none}
-.drop.expired .drop-done{display:flex}
+.title{font-size:clamp(40px,5.4vh,58px);line-height:1.02;letter-spacing:-.028em;font-weight:500;color:var(--ink)}
 
-.buy{display:inline-flex;align-items:center;justify-content:center;gap:14px;
-  padding:clamp(16px,1.4vw,24px) clamp(48px,4.4vw,80px);background:var(--emerald);color:var(--paper);
-  font-size:clamp(12px,0.85vw,16px);letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+.lede{font-size:clamp(14px,1.7vh,16px);line-height:1.45;color:var(--ink-2);max-width:36ch;font-weight:400}
+@media (max-height:660px){.lede{display:none}}
+
+/* cta */
+.cta{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,1.8vh,18px);width:100%;max-width:440px;margin-top:clamp(6px,1vh,12px)}
+
+.price-row{position:relative;display:flex;align-items:flex-end;justify-content:flex-start;gap:clamp(20px,3vw,32px);width:100%;padding-top:clamp(14px,2vh,20px)}
+.price-row::before{content:'';position:absolute;top:0;left:0;width:280px;height:1px;background:var(--rule)}
+
+.price{font-size:clamp(32px,4.4vh,44px);font-weight:500;line-height:.95;letter-spacing:-.025em;color:var(--ink)}
+
+.buy{display:flex;align-self:flex-start;align-items:center;justify-content:center;gap:14px;width:280px;
+  padding:clamp(16px,2.2vh,20px) 0;background:var(--emerald);color:var(--paper);
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
   text-decoration:none;border:none;cursor:pointer;position:relative;overflow:hidden;
   transition:transform .25s cubic-bezier(.2,.8,.2,1);
 }
 .buy::before{content:'';position:absolute;inset:0;background:var(--ink);transform:translateX(-101%);transition:transform .55s cubic-bezier(.65,0,.35,1);z-index:0}
-.buy:hover{transform:translateY(-2px)}
 .buy:hover::before{transform:translateX(0)}
 .buy>*{position:relative;z-index:1}
+.buy .arrow{transition:transform .35s}
+.buy:hover .arrow{transform:translateX(6px)}
 
 /* reveal */
 .r{opacity:0;transform:translateY(14px);animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
-.d1{animation-delay:.10s}.d2{animation-delay:.32s}.d3{animation-delay:.55s}.d4{animation-delay:.82s}
+.d1{animation-delay:.10s}.d2{animation-delay:.32s}.d3{animation-delay:.55s}.d4{animation-delay:.82s}.d5{animation-delay:1.08s}.d6{animation-delay:1.32s}.d7{animation-delay:1.58s}
 @keyframes rise{to{opacity:1;transform:translateY(0)}}
 .stage .wallet{opacity:0;transform:translateY(24px) scale(.97);animation:walletRise 1.4s cubic-bezier(.2,.8,.2,1) .25s forwards}
 @keyframes walletRise{to{opacity:1;transform:translateY(0) scale(1)}}
@@ -87,15 +89,22 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 /* responsive */
 @media (max-width:820px){
   html,body{overflow:auto;height:auto;min-height:100%}
-  .frame{display:flex;flex-direction:column;height:auto;min-height:100dvh;padding:14px 22px 24px;gap:18px}
+  .frame{display:flex;flex-direction:column;height:auto;min-height:100dvh;padding:12px 22px 24px;gap:16px}
   .top{order:3;margin-top:auto;justify-content:center;padding-top:24px;border-top:1px solid var(--rule)}
   .top .help{font-size:12px;letter-spacing:.18em}
-  .hero{order:2;gap:clamp(20px,3vh,32px)}
-  .stage{width:100%}
-  .wallet{max-height:min(64vh,96vw);max-width:96vw}
-  .countdown{gap:14px}
-  .cd-unit{min-width:54px}
-  .cd-sep{font-size:36px}
+  .hero{order:2;grid-template-columns:1fr;gap:clamp(18px,2.6vh,28px);text-align:center;align-items:start}
+  .stage{order:1;width:100%;min-height:auto}
+  .product{order:2;align-items:center;text-align:center;margin:0 auto;gap:14px;max-width:none;width:100%}
+  .lede{max-width:36ch;margin:0 auto}
+  .cta{align-items:center;max-width:none;width:100%;margin:0 auto;gap:14px}
+  .price-row{justify-content:center;width:100%;padding-top:18px}
+  .price-row::before{width:100%;left:0}
+  .buy{width:100%;align-self:stretch;padding:20px 24px;font-size:13px;letter-spacing:.16em}
+  .wallet{max-height:min(56vh,88vw);max-width:90vw}
+}
+@media (max-height:620px) and (min-width:821px){
+  .lede{display:none}
+  .wallet{max-height:42vh}
 }
 </style>
 </head>
@@ -112,30 +121,29 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
 
     <div class="stage">
       <div class="wallet-wrap" id="wallet-wrap" role="button" tabindex="0" aria-label="Click to open wallet">
-        <img class="wallet wallet-base" src="wallet-sand.png" alt="Emerald Green Bifold Wallet · Embossed Ark Shell Pattern · Top Grain Cowhide Leather">
+        <img class="wallet wallet-base" src="wallet-sand.png" alt="RAVISAUCE Shell bifold wallet — emerald, top grain leather, embossed scallop pattern">
         <img class="wallet wallet-hover" src="wallet-open.png" alt="" aria-hidden="true">
         <span class="wallet-hint" aria-hidden="true"></span>
       </div>
     </div>
 
-    <div class="drop r d3">
-      <div class="tagline r d2">Emerald Green Bifold Wallet · Embossed Ark Shell Pattern · Top Grain Cowhide Leather</div>
-      <div class="drop-label r d3">Ark Wallet drops <span class="em">Sunday, June 14 · 3:00 PM EST</span></div>
-      <div class="countdown" id="countdown" aria-live="polite">
-        <div class="cd-unit"><span class="cd-value" data-unit="d">00</span><span class="cd-label">Days</span></div>
-        <span class="cd-sep">:</span>
-        <div class="cd-unit"><span class="cd-value" data-unit="h">00</span><span class="cd-label">Hours</span></div>
-        <span class="cd-sep">:</span>
-        <div class="cd-unit"><span class="cd-value" data-unit="m">00</span><span class="cd-label">Minutes</span></div>
-        <span class="cd-sep">:</span>
-        <div class="cd-unit"><span class="cd-value" data-unit="s">00</span><span class="cd-label">Seconds</span></div>
-      </div>
-      <div class="drop-done">
-        <span class="live">It's live</span>
-        <a href="https://buy.stripe.com/eVq7sN86E916eBg1bl7ok05" class="buy" aria-label="Buy the Ark Wallet for $64">
-          <span>Buy now · $64</span>
+    <div class="product">
+
+      <span class="kicker r d2">Hand-embossed bifold</span>
+
+      <h1 class="title r d3">Ark Wallet</h1>
+
+      <p class="lede r d4">High quality top grain cowhide leather. Handmade and embossed with the radiating ridges of an ark shell. Now go to the beach and look at some cool shells!</p>
+
+      <div class="cta">
+        <div class="price-row r d5">
+          <div class="price">$64</div>
+        </div>
+        <a href="https://buy.stripe.com/eVq7sN86E916eBg1bl7ok05" class="buy r d6" aria-label="Buy Ark Wallet for $64">
+          <span>Buy now</span>
         </a>
       </div>
+
     </div>
 
   </section>
@@ -153,31 +161,6 @@ html,body{height:100%;background:var(--paper);color:var(--ink);font-family:'Helv
     wrap.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
-
-    // Drop: Sunday June 14, 2026 at 3pm Eastern (EDT, UTC-4 in June)
-    const DROP = new Date('2026-06-14T15:00:00-04:00').getTime();
-    const drop = document.querySelector('.drop');
-    const elD = drop.querySelector('[data-unit=d]');
-    const elH = drop.querySelector('[data-unit=h]');
-    const elM = drop.querySelector('[data-unit=m]');
-    const elS = drop.querySelector('[data-unit=s]');
-    const pad = n => String(Math.max(0, n)).padStart(2, '0');
-
-    const tick = () => {
-      const ms = DROP - Date.now();
-      if (ms <= 0) {
-        drop.classList.add('expired');
-        elD.textContent = elH.textContent = elM.textContent = elS.textContent = '00';
-        return;
-      }
-      const s = Math.floor(ms / 1000);
-      elD.textContent = pad(Math.floor(s / 86400));
-      elH.textContent = pad(Math.floor((s % 86400) / 3600));
-      elM.textContent = pad(Math.floor((s % 3600) / 60));
-      elS.textContent = pad(s % 60);
-    };
-    tick();
-    setInterval(tick, 1000);
   })();
 </script>
 
